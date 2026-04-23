@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday, Drish</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Syne:wght@400;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:#080810; --deep:#0d1117; --panel:#161b22;
+  --blue:#58a6ff; --blue-light:#79c0ff; --blue-dim:#1f6feb;
+  --silver:#c9d1d9; --silver-dim:#8b949e; --white:#f0f6fc;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--black);color:var(--silver);font-family:'Space Grotesk',sans-serif;cursor:none;}
+body.scene-memory{overflow:hidden auto;}
+
+/* Cursor */
+.c-dot{position:fixed;width:7px;height:7px;background:var(--blue);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);}
+.c-ring{position:fixed;width:32px;height:32px;border:1.5px solid var(--blue);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:width .2s,height .2s;opacity:.6;}
+
+/* Grid bg */
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(88,166,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(88,166,255,.04) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0;}
+
+/* Back link */
+.back-site{position:fixed;top:24px;left:28px;z-index:9000;display:flex;align-items:center;gap:10px;color:var(--silver-dim);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;transition:color .2s;padding:9px 16px;background:rgba(88,166,255,.04);border:1px solid rgba(88,166,255,.12);border-radius:40px;}
+.back-site:hover{color:var(--blue);}
+.back-site svg{width:13px;fill:none;stroke:currentColor;stroke-width:2;}
+
+/* Particles */
+#particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.particle{position:absolute;bottom:-20px;border-radius:50%;background:var(--blue);opacity:0;animation:rise linear infinite;}
+@keyframes rise{0%{opacity:0;transform:translateY(0) scale(0);}10%{opacity:.5;}90%{opacity:.1;}100%{opacity:0;transform:translateY(-110vh) scale(1.2);}}
+
+/* Scenes */
+.bd-scene{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .7s ease;z-index:100;}
+.bd-scene.active{opacity:1;pointer-events:all;}
+.bd-scene.exit{opacity:0;pointer-events:none;}
+
+/* ── SCENE 0 ── */
+.bd-title-wrap{text-align:center;position:relative;z-index:2;padding:20px;}
+.bd-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--blue-dim);display:block;margin-bottom:20px;opacity:0;animation:fadeUp .6s ease .3s forwards;}
+.bd-title{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,6vw,6rem);font-weight:800;color:var(--white);line-height:1.0;overflow:hidden;margin-bottom:12px;}
+.bd-title .letter{display:inline-block;opacity:0;transform:translateY(60px);animation:letterDrop .6s cubic-bezier(.16,1,.3,1) forwards;}
+.bd-title .letter.blue{color:var(--blue);}
+.bd-subtitle{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.15rem;color:var(--silver-dim);display:block;margin-top:16px;opacity:0;animation:fadeUp .7s ease 1.4s forwards;}
+@keyframes letterDrop{to{opacity:1;transform:translateY(0);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+
+.envelope-cta{margin-top:60px;display:flex;flex-direction:column;align-items:center;gap:18px;opacity:0;animation:fadeUp .7s ease 1.8s forwards;}
+.env-hint{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--silver-dim);}
+.env-preview{width:96px;height:68px;cursor:none;animation:float 3s ease-in-out infinite;}
+.env-body{width:96px;height:68px;background:rgba(88,166,255,.06);border:1.5px solid rgba(88,166,255,.35);border-radius:2px;position:relative;backdrop-filter:blur(10px);transition:background .3s;}
+.env-preview:hover .env-body{background:rgba(88,166,255,.12);}
+.env-flap-bg{position:absolute;top:0;left:0;width:96px;height:40px;clip-path:polygon(0 0,100% 0,50% 60%);background:rgba(88,166,255,.12);border-bottom:1px solid rgba(88,166,255,.25);}
+.env-seal{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:28px;height:28px;border:1.5px solid rgba(88,166,255,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:.8rem;font-weight:800;color:var(--blue);background:rgba(8,8,16,.5);}
+.env-click-text{font-family:'Instrument Serif',serif;font-style:italic;font-size:.95rem;color:var(--blue-dim);}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+
+/* ── SCENE 1 ── */
+#scene-1{background:var(--black);}
+.envelope-stage{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:100%;}
+.envelope{width:320px;height:220px;position:relative;cursor:none;transform-style:preserve-3d;}
+.envelope.opening .flap{animation:openFlap .6s ease forwards;}
+.envelope.opening .letter-pull{animation:letterRise 1s ease .5s forwards;}
+@keyframes openFlap{from{transform:rotateX(0);}to{transform:rotateX(-180deg);}}
+@keyframes letterRise{from{transform:translateY(0);opacity:0;}to{transform:translateY(-270px);opacity:1;}}
+.env-body-large{position:absolute;inset:0;background:rgba(88,166,255,.04);border:1.5px solid rgba(88,166,255,.3);border-radius:3px;backdrop-filter:blur(20px);}
+.flap{position:absolute;top:0;left:0;width:320px;height:120px;clip-path:polygon(0 0,100% 0,50% 65%);background:rgba(88,166,255,.08);border-bottom:1px solid rgba(88,166,255,.2);transform-origin:top center;z-index:10;backface-visibility:hidden;}
+.env-bottom-fold{position:absolute;bottom:0;left:0;width:320px;height:105px;clip-path:polygon(0 100%,100% 100%,50% 25%);background:rgba(88,166,255,.05);}
+.env-left-fold{position:absolute;top:0;left:0;width:160px;height:220px;clip-path:polygon(0 0,0 100%,100% 50%);background:rgba(88,166,255,.03);}
+.env-right-fold{position:absolute;top:0;right:0;width:160px;height:220px;clip-path:polygon(100% 0,100% 100%,0 50%);background:rgba(88,166,255,.02);}
+.env-seal-big{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:34px;height:34px;border:1.5px solid rgba(88,166,255,.45);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:.85rem;font-weight:800;color:var(--blue);background:rgba(8,8,16,.6);}
+.letter-pull{position:absolute;top:28px;left:28px;right:28px;height:155px;background:rgba(88,166,255,.04);border:1px solid rgba(88,166,255,.15);border-radius:2px;opacity:0;}
+.envelope-instruction{position:absolute;bottom:72px;text-align:center;}
+.envelope-instruction p{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--silver-dim);}
+
+/* Letter overlay */
+.letter-overlay{position:fixed;inset:0;background:rgba(5,5,10,.95);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .5s;}
+.letter-overlay.open{opacity:1;pointer-events:all;}
+.letter-paper{background:linear-gradient(160deg,#f8f4ec 0%,#f0eadc 100%);max-width:640px;width:90vw;max-height:82vh;border-radius:2px;padding:56px 52px 48px;position:relative;overflow-y:auto;box-shadow:0 40px 120px rgba(0,0,0,.9),0 0 0 1px rgba(88,166,255,.2);transform:scale(.88) translateY(30px);transition:transform .5s cubic-bezier(.16,1,.3,1);}
+.letter-overlay.open .letter-paper{transform:scale(1) translateY(0);}
+.letter-paper::-webkit-scrollbar{width:3px;}
+.letter-paper::-webkit-scrollbar-thumb{background:rgba(88,166,255,.35);}
+.letter-close{position:absolute;top:18px;right:22px;width:30px;height:30px;background:none;border:none;cursor:none;color:#3a2e1e;opacity:.45;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:opacity .2s;}
+.letter-close:hover{opacity:1;}
+.letter-header{font-family:'Syne',sans-serif;font-size:1.0rem;color:#2a1f0e;margin-bottom:30px;text-align:center;letter-spacing:.06em;text-transform:uppercase;}
+.letter-body{font-family:'Great Vibes',cursive;font-size:1.4rem;color:#2a1f0e;line-height:1.9;}
+.letter-body p{margin-bottom:18px;}
+.letter-body .opening{font-size:1.65rem;margin-bottom:26px;}
+.letter-body .sign-off{margin-top:32px;font-size:1.55rem;}
+.letter-line{height:1px;background:linear-gradient(90deg,transparent,rgba(88,166,255,.3),transparent);margin:24px 0;}
+.letter-footer{text-align:right;font-family:'Instrument Serif',serif;font-style:italic;font-size:.82rem;color:#5a4030;margin-top:14px;}
+.letter-next-wrap{position:absolute;bottom:28px;left:0;right:0;text-align:center;opacity:0;pointer-events:none;transition:opacity .4s;}
+.letter-next-wrap.show{opacity:1;pointer-events:all;}
+.letter-next-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 32px;background:var(--blue);color:var(--black);font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;border:none;cursor:none;transition:background .2s,transform .2s;}
+.letter-next-btn:hover{background:var(--blue-light);transform:translateY(-2px);}
+
+/* ── SCENE 2 — CAKE ── */
+#scene-2{background:var(--black);}
+.cake-scene{display:flex;flex-direction:column;align-items:center;gap:0;position:relative;z-index:2;}
+.cake-title{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,3vw,2.8rem);color:var(--white);text-align:center;margin-bottom:44px;font-weight:800;}
+.cake-title em{color:var(--blue);font-style:italic;}
+.cake-wrap{position:relative;display:flex;flex-direction:column;align-items:center;margin-bottom:44px;}
+.cake-tier{border-radius:5px;position:relative;display:flex;align-items:center;justify-content:center;}
+.cake-t1{width:240px;height:66px;background:linear-gradient(180deg,#0d1117 0%,#080810 100%);border:1.5px solid rgba(88,166,255,.25);}
+.cake-t2{width:190px;height:56px;background:linear-gradient(180deg,#111827 0%,#0d1117 100%);border:1.5px solid rgba(88,166,255,.25);margin-top:-2px;}
+.cake-t3{width:140px;height:48px;background:linear-gradient(180deg,#1a2333 0%,#111827 100%);border:1.5px solid rgba(88,166,255,.25);margin-top:-2px;}
+.cake-tier::before{content:'';position:absolute;top:13px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(88,166,255,.3),transparent);}
+.cake-tier::after{content:'';position:absolute;bottom:9px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(88,166,255,.18),transparent);}
+.cake-t3 .frosting{position:absolute;top:-8px;left:0;right:0;height:12px;background:linear-gradient(180deg,rgba(88,166,255,.45) 0%,rgba(88,166,255,.1) 100%);border-radius:8px 8px 0 0;}
+.cake-plate{width:280px;height:12px;background:linear-gradient(180deg,rgba(88,166,255,.2) 0%,rgba(88,166,255,.06) 100%);border-radius:0 0 50% 50%;border:1px solid rgba(88,166,255,.15);border-top:none;}
+.candle-wrap{position:absolute;top:-88px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;}
+.flame-wrap{position:relative;width:20px;height:34px;display:flex;align-items:flex-end;justify-content:center;}
+.flame{width:11px;height:26px;background:linear-gradient(to top,#1f6feb 0%,#58a6ff 35%,#79c0ff 65%,#cde9ff 100%);border-radius:50% 50% 30% 30% / 60% 60% 40% 40%;animation:flicker .25s ease-in-out infinite alternate;transform-origin:bottom center;position:relative;}
+.flame-inner{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:4px;height:12px;background:linear-gradient(to top,rgba(255,255,255,0),rgba(255,255,255,.5));border-radius:50%;}
+@keyframes flicker{0%{transform:scaleX(1) scaleY(1) rotate(-1.5deg);}100%{transform:scaleX(.88) scaleY(1.08) rotate(1.5deg);}}
+.flame.blown{animation:blowOut .7s ease forwards;}
+@keyframes blowOut{0%{opacity:1;transform:scaleX(1) scaleY(1);}20%{transform:scaleX(2.5) scaleY(.4) translateX(14px) rotate(25deg);}60%{opacity:.3;transform:scaleX(1.5) scaleY(.2) translateX(6px);}100%{opacity:0;transform:scaleX(0) scaleY(0);}}
+.flame-smoke{position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:2px;height:0;background:rgba(200,200,200,.35);border-radius:2px;opacity:0;}
+.flame-smoke.show{animation:smokeRise 2s ease forwards;}
+@keyframes smokeRise{0%{height:0;opacity:.4;}100%{height:38px;opacity:0;transform:translateX(-50%) translateY(-28px) scaleX(3.5);}}
+.candle-body{width:13px;height:52px;background:linear-gradient(90deg,rgba(88,166,255,.6) 0%,rgba(88,166,255,.2) 50%,rgba(88,166,255,.5) 100%);border-radius:3px 3px 2px 2px;position:relative;}
+.candle-body::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(180deg,transparent 0,transparent 8px,rgba(88,166,255,.2) 8px,rgba(88,166,255,.2) 9px);border-radius:inherit;}
+.candle-drip{width:9px;height:7px;background:rgba(88,166,255,.35);border-radius:0 0 5px 5px;position:absolute;top:-2px;left:2px;}
+.mic-section{text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px;}
+.mic-prompt{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--silver-dim);}
+.mic-visual{width:180px;height:44px;background:rgba(88,166,255,.04);border:1px solid rgba(88,166,255,.15);border-radius:40px;overflow:hidden;position:relative;}
+.mic-bar-wrap{display:flex;align-items:center;justify-content:center;height:100%;gap:3px;padding:0 14px;}
+.mic-bar{width:3px;background:var(--blue-dim);border-radius:2px;height:6px;transition:height .08s;}
+.mic-btn-fallback{margin-top:6px;padding:9px 22px;background:transparent;border:1px solid rgba(88,166,255,.3);color:var(--blue-dim);font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;cursor:none;transition:background .2s,color .2s;border-radius:2px;}
+.mic-btn-fallback:hover{background:rgba(88,166,255,.1);color:var(--blue);}
+.bday-burst{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(5,5,10,.93);z-index:800;opacity:0;pointer-events:none;transition:opacity .5s;text-align:center;padding:24px;}
+.bday-burst.show{opacity:1;pointer-events:all;}
+.bday-burst h1{font-family:'Syne',sans-serif;font-size:clamp(2.5rem,6vw,5.5rem);font-weight:800;color:var(--blue-light);margin-bottom:16px;animation:burstIn .7s cubic-bezier(.16,1,.3,1) forwards;}
+.bday-burst p{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.2rem;color:var(--silver-dim);max-width:480px;line-height:1.7;margin-bottom:44px;}
+@keyframes burstIn{from{transform:scale(.5);opacity:0;}to{transform:scale(1);opacity:1;}}
+.confetti-piece{position:absolute;width:7px;height:7px;opacity:0;animation:confettiFall 2.5s ease forwards;}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(0) rotate(0);}100%{opacity:0;transform:translateY(80vh) rotate(720deg);}}
+
+/* ── SCENE 3 — MEMORY LANE ── */
+#scene-3{position:relative;overflow-y:auto;justify-content:flex-start;padding-top:72px;}
+body.scene-memory #scene-3{pointer-events:all;}
+.memory-header{text-align:center;padding:40px 40px 56px;position:relative;z-index:2;}
+.memory-tag{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:14px;}
+.memory-title{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,6vw,6rem);font-weight:800;color:var(--white);line-height:1.0;}
+.memory-title em{color:var(--blue);}
+.memory-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.1rem;color:var(--silver-dim);margin-top:14px;max-width:480px;margin-left:auto;margin-right:auto;}
+.memory-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:0 3px;max-width:1100px;margin:0 auto;width:100%;}
+.mem-item{position:relative;overflow:hidden;cursor:none;}
+.mem-item img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.72) contrast(1.06) saturate(.75);transition:transform .6s ease,filter .4s;}
+.mem-item:hover img{transform:scale(1.05);filter:brightness(.92) contrast(1.08) saturate(.9);}
+.mem-item-1{grid-row:span 2;}
+.mem-item-4{grid-column:span 2;}
+.mem-caption{position:absolute;bottom:0;left:0;right:0;padding:22px 18px 14px;background:linear-gradient(0deg,rgba(8,8,16,.88) 0%,transparent 100%);font-family:'Instrument Serif',serif;font-style:italic;font-size:.9rem;color:var(--silver-dim);opacity:0;transition:opacity .3s;}
+.mem-item:hover .mem-caption{opacity:1;}
+.memory-footer{padding:72px 40px 56px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:18px;}
+.memory-footer p{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.15rem;color:var(--silver-dim);max-width:440px;line-height:1.7;}
+.memory-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:14px;}
+.btn-bd{display:inline-flex;align-items:center;gap:10px;padding:12px 32px;font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;cursor:none;transition:all .25s;border-radius:2px;}
+.btn-bd-fill{background:var(--blue);color:var(--black);border:none;box-shadow:0 4px 24px rgba(88,166,255,.35);}
+.btn-bd-fill:hover{background:var(--blue-light);transform:translateY(-2px);}
+.btn-bd-outline{background:transparent;color:var(--blue);border:1px solid var(--blue);}
+.btn-bd-outline:hover{background:rgba(88,166,255,.1);}
+</style>
+</head>
+<body>
+
+<div class="c-dot"></div>
+<div class="c-ring"></div>
+<a href="index.html" class="back-site">
+  <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  Back to Site
+</a>
+<div id="particles"></div>
+
+<!-- SCENE 0 -->
+<div class="bd-scene active" id="scene-0">
+  <div class="bd-title-wrap">
+    <span class="bd-eyebrow">// a very special day</span>
+    <h1 class="bd-title" id="bd-title-h"></h1>
+    <span class="bd-subtitle">Something was made for you. Click to open it.</span>
+    <div class="envelope-cta">
+      <span class="env-hint">Your letter awaits</span>
+      <div class="env-preview" id="env-preview-btn">
+        <div class="env-body">
+          <div class="env-flap-bg"></div>
+          <div class="env-seal">D</div>
+        </div>
+      </div>
+      <span class="env-click-text">Click the envelope</span>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 1 -->
+<div class="bd-scene" id="scene-1">
+  <div class="envelope-stage">
+    <div class="envelope" id="main-envelope">
+      <div class="env-body-large">
+        <div class="flap"></div>
+        <div class="env-bottom-fold"></div>
+        <div class="env-left-fold"></div>
+        <div class="env-right-fold"></div>
+        <div class="env-seal-big">D</div>
+        <div class="letter-pull"></div>
+      </div>
+    </div>
+    <div class="envelope-instruction"><p>Click the envelope to open your letter</p></div>
+  </div>
+  <div class="letter-overlay" id="letter-overlay">
+    <div class="letter-paper">
+      <button class="letter-close" id="letter-close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="letter-header">For Drish, on his birthday</div>
+      <div class="letter-body">
+        <p class="opening">Dear Drish,</p>
+        <div class="letter-line"></div>
+        <p>There are people who move through the world collecting things — trophies, followers, achievements. And then there are people like you, who move through it quietly building things, and somehow that ends up meaning far more.</p>
+        <p>You picked up a keyboard and taught yourself to make things appear on screens that did not exist before. You picked up a camera and trained yourself to see light the way most people never learn to. You stepped onto a cricket pitch, a volleyball court, a football ground — and brought the same discipline to each one.</p>
+        <p>That is not nothing. That is actually extraordinary.</p>
+        <p>Growing up is an uneven road. Some stretches are harder than they look from the outside. But every line of code you have written, every photograph you have taken, every sprint you have made on the field — all of it has been practice for the version of you that is still becoming.</p>
+        <div class="letter-line"></div>
+        <p>So as another September 24th arrives, here is what I want you to know:</p>
+        <p>The curiosity you carry — protect it. The work ethic you have built — keep building. The people you love — show them.</p>
+        <p>The best commits are still ahead. The best frames are still unshot. The best version of Drish Shah is still loading.</p>
+        <p class="sign-off">Happy Birthday, Drish.</p>
+        <p>Keep building things worth keeping.</p>
+      </div>
+      <div class="letter-footer">Written with respect and admiration.</div>
+    </div>
+    <div class="letter-next-wrap" id="letter-next-wrap">
+      <button class="letter-next-btn" id="letter-next-btn">
+        Continue
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 2 — CAKE -->
+<div class="bd-scene" id="scene-2">
+  <div class="cake-scene">
+    <h2 class="cake-title">Make a <em>wish,</em> Drish</h2>
+    <div class="cake-wrap">
+      <div class="candle-wrap">
+        <div class="flame-wrap">
+          <div class="flame" id="candle-flame"><div class="flame-inner"></div></div>
+          <div class="flame-smoke" id="flame-smoke"></div>
+        </div>
+        <div class="candle-body"><div class="candle-drip"></div></div>
+      </div>
+      <div class="cake-tier cake-t3"><div class="frosting"></div></div>
+      <div class="cake-tier cake-t2"></div>
+      <div class="cake-tier cake-t1"></div>
+      <div class="cake-plate"></div>
+    </div>
+    <div class="mic-section" id="mic-section">
+      <p class="mic-prompt">Blow into your microphone to blow out the candle</p>
+      <div class="mic-visual" id="mic-visual"><div class="mic-bar-wrap" id="mic-bars"></div></div>
+      <button class="mic-btn-fallback" id="mic-start-btn">Allow Microphone</button>
+      <button class="mic-btn-fallback" id="mic-click-blow" style="display:none;">Click to Blow Out</button>
+    </div>
+  </div>
+  <div class="bday-burst" id="bday-burst">
+    <div id="confetti-container"></div>
+    <h1>Happy Birthday, Drish</h1>
+    <p>May every wish you blow out tonight come back to you built, shipped, and better than you imagined. You have earned every good thing coming.</p>
+    <button class="letter-next-btn" id="cake-next-btn">
+      Memory Lane
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- SCENE 3 — MEMORY LANE -->
+<div class="bd-scene" id="scene-3">
+  <div class="memory-header">
+    <span class="memory-tag">// memory_lane.jpg</span>
+    <h1 class="memory-title">Memory <em>Lane</em></h1>
+    <p class="memory-sub">Every frame a moment. Every moment, unmistakably Drish.</p>
+  </div>
+  <div class="memory-grid">
+    <div class="mem-item mem-item-1"><img src="images/horse-sunset.jpg" alt=""><div class="mem-caption">The frame that stopped time</div></div>
+    <div class="mem-item"><img src="images/profile-camera.jpg" alt=""><div class="mem-caption">Behind the Nikon</div></div>
+    <div class="mem-item"><img src="images/flower-orange.jpg" alt=""><div class="mem-caption">Hibiscus at golden hour</div></div>
+    <div class="mem-item mem-item-4"><img src="images/sunset-mountain.jpg" alt="" style="height:320px;"><div class="mem-caption">Mountains at dusk</div></div>
+    <div class="mem-item"><img src="images/river-sunset.jpg" alt=""><div class="mem-caption">River at the edge of night</div></div>
+    <div class="mem-item"><img src="images/guitar1.jpg" alt=""><div class="mem-caption">Yamaha in the blue hour</div></div>
+    <div class="mem-item"><img src="images/flower-white.jpg" alt=""><div class="mem-caption">White hibiscus, morning light</div></div>
+    <div class="mem-item"><img src="images/teddy.jpg" alt=""><div class="mem-caption">Amber and soft textures</div></div>
+    <div class="mem-item"><img src="images/profile-hoodie.jpg" alt=""><div class="mem-caption">The ghost of caldera</div></div>
+  </div>
+  <div class="memory-footer">
+    <p>A year of building, shooting, and being exactly who you are. Here is to many more.</p>
+    <div class="memory-actions">
+      <button class="btn-bd btn-bd-fill" id="reexperience-btn">Re-experience</button>
+      <a href="index.html" class="btn-bd btn-bd-outline">Back to Home</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// Cursor
+const cDot=document.querySelector('.c-dot'),cRing=document.querySelector('.c-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function tick(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;cDot.style.left=mx+'px';cDot.style.top=my+'px';cRing.style.left=rx+'px';cRing.style.top=ry+'px';requestAnimationFrame(tick);})();
+
+// Particles
+(function(){
+  const c=document.getElementById('particles');
+  for(let i=0;i<24;i++){
+    const p=document.createElement('div'); p.className='particle';
+    const s=2+Math.random()*6;
+    Object.assign(p.style,{left:Math.random()*100+'%',width:s+'px',height:s+'px',opacity:Math.random()*.4+.1,animationDuration:(14+Math.random()*20)+'s',animationDelay:(-Math.random()*20)+'s',background:'rgba(88,166,255,'+(0.2+Math.random()*.3)+')'});
+    c.appendChild(p);
+  }
+})();
+
+// Title animation
+(function(){
+  const title='Happy Birthday, Drish';
+  const el=document.getElementById('bd-title-h');
+  title.split('').forEach((ch,i)=>{
+    const s=document.createElement('span');
+    s.className='letter'+(/[D]/.test(ch)&&i>14?' blue':'');
+    s.textContent=ch===' '?'\u00a0':ch;
+    s.style.animationDelay=(.55+i*.04)+'s';
+    el.appendChild(s);
+  });
+})();
+
+// Scene management
+let currentScene=0;
+function goScene(n){
+  document.querySelectorAll('.bd-scene').forEach((s,i)=>{
+    s.classList.remove('active','exit');
+    if(i===n){
+      setTimeout(()=>s.classList.add('active'),50);
+      if(n===3){document.body.classList.add('scene-memory');s.style.position='relative';s.style.overflow='visible';}
+      else{document.body.classList.remove('scene-memory');s.style.position='';s.style.overflow='';}
+    }
+  });
+  currentScene=n;
+}
+document.getElementById('env-preview-btn').addEventListener('click',()=>goScene(1));
+
+// Envelope open
+const mainEnv=document.getElementById('main-envelope');
+const letterOverlay=document.getElementById('letter-overlay');
+let letterOpened=false;
+mainEnv.addEventListener('click',()=>{if(letterOpened)return;letterOpened=true;mainEnv.classList.add('opening');setTimeout(()=>letterOverlay.classList.add('open'),900);});
+
+const letterNextWrap=document.getElementById('letter-next-wrap');
+document.getElementById('letter-close').addEventListener('click',()=>{letterOverlay.classList.remove('open');setTimeout(()=>letterNextWrap.classList.add('show'),500);});
+document.getElementById('letter-next-btn').addEventListener('click',()=>{letterNextWrap.classList.remove('show');goScene(2);setupMic();});
+
+// Cake + mic
+let candleBlown=false;
+function blowCandle(){if(candleBlown)return;candleBlown=true;document.getElementById('candle-flame').classList.add('blown');document.getElementById('flame-smoke').classList.add('show');setTimeout(()=>showBurst(),800);}
+function showBurst(){const b=document.getElementById('bday-burst');b.classList.add('show');spawnConfetti();}
+function spawnConfetti(){const c=document.getElementById('confetti-container');const colors=['#58a6ff','#79c0ff','#1f6feb','#c9d1d9','#ffffff'];for(let i=0;i<55;i++){const p=document.createElement('div');p.className='confetti-piece';Object.assign(p.style,{left:Math.random()*100+'vw',top:(Math.random()*30)+'vh',background:colors[Math.floor(Math.random()*colors.length)],animationDelay:Math.random()*1.5+'s',animationDuration:(2+Math.random()*2)+'s',borderRadius:Math.random()>.5?'50%':'2px',width:(5+Math.random()*7)+'px',height:(5+Math.random()*7)+'px'});c.appendChild(p);setTimeout(()=>p.remove(),4000);}}
+document.getElementById('cake-next-btn').addEventListener('click',()=>goScene(3));
+
+const micBars=document.getElementById('mic-bars');
+for(let i=0;i<20;i++){const b=document.createElement('div');b.className='mic-bar';micBars.appendChild(b);}
+const bars=micBars.querySelectorAll('.mic-bar');
+let audioCtx,analyser,dataArr,micStream,blowTimer=0;
+document.getElementById('mic-start-btn').addEventListener('click',setupMic);
+function setupMic(){
+  document.getElementById('mic-start-btn').style.display='none';
+  document.getElementById('mic-click-blow').style.display='inline-flex';
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)return;
+  navigator.mediaDevices.getUserMedia({audio:true,video:false}).then(stream=>{
+    micStream=stream;audioCtx=new(window.AudioContext||window.webkitAudioContext)();analyser=audioCtx.createAnalyser();analyser.fftSize=256;dataArr=new Uint8Array(analyser.frequencyBinCount);audioCtx.createMediaStreamSource(stream).connect(analyser);document.getElementById('mic-click-blow').style.display='none';animateMic();
+  }).catch(()=>{document.getElementById('mic-click-blow').style.display='inline-flex';});
+}
+document.getElementById('mic-click-blow').addEventListener('click',blowCandle);
+function animateMic(){if(candleBlown){if(micStream)micStream.getTracks().forEach(t=>t.stop());return;}analyser.getByteFrequencyData(dataArr);const avg=dataArr.reduce((a,b)=>a+b,0)/dataArr.length;bars.forEach((b,i)=>{const h=3+(avg/255)*34*Math.abs(Math.sin(i*.5+Date.now()*.004));b.style.height=h+'px';b.style.background=avg>22?'var(--blue)':'var(--blue-dim)';});if(avg>22){blowTimer+=16;}else{blowTimer=Math.max(0,blowTimer-8);}if(blowTimer>420){blowCandle();}requestAnimationFrame(animateMic);}
+
+// Re-experience
+document.getElementById('reexperience-btn').addEventListener('click',()=>{
+  candleBlown=false;letterOpened=false;
+  document.getElementById('candle-flame').classList.remove('blown');
+  document.getElementById('flame-smoke').classList.remove('show');
+  document.getElementById('bday-burst').classList.remove('show');
+  document.getElementById('letter-overlay').classList.remove('open');
+  document.getElementById('letter-next-wrap').classList.remove('show');
+  document.getElementById('confetti-container').innerHTML='';
+  document.getElementById('main-envelope').classList.remove('opening');
+  goScene(0);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drish Shah — Portfolio</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── HERO ── */
+.hero {
+  min-height: calc(100vh - var(--nav-h));
+  display: grid; grid-template-columns: 1fr 1fr;
+  position: relative; overflow: hidden;
+}
+/* Blue grid lines background */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(88,166,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(88,166,255,.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  z-index: 0;
+}
+.hero-left {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 80px 64px 100px 72px;
+  position: relative; z-index: 2;
+}
+.hero-mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .72rem; color: var(--blue-dim);
+  letter-spacing: .08em; margin-bottom: 20px;
+  display: flex; align-items: center; gap: 12px;
+  opacity: 0; animation: fadeUp .6s ease .2s forwards;
+}
+.hero-mono::before {
+  content: ''; width: 32px; height: 1px; background: var(--blue-dim);
+}
+.hero-name {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(3.5rem, 5.5vw, 6.5rem);
+  font-weight: 800; color: var(--white);
+  line-height: .95; margin-bottom: 4px;
+  opacity: 0; animation: fadeUp .7s ease .35s forwards;
+}
+.hero-name .blue-text { color: var(--blue); }
+.hero-last {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic; font-size: clamp(2rem,3.5vw,4.2rem);
+  color: var(--silver-dim); display: block;
+  font-weight: 400; letter-spacing: .04em;
+  margin-bottom: 32px;
+  opacity: 0; animation: fadeUp .7s ease .5s forwards;
+}
+.hero-typewriter-wrap {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .9rem; color: var(--blue-dim);
+  height: 1.4rem; margin-bottom: 28px;
+  opacity: 0; animation: fadeUp .6s ease .6s forwards;
+}
+#typewriter::after { content: '_'; color: var(--blue); animation: blink .8s step-end infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.hero-desc {
+  font-size: 1.0rem; line-height: 1.8; color: var(--silver-dim);
+  max-width: 420px; margin-bottom: 40px;
+  opacity: 0; animation: fadeUp .6s ease .7s forwards;
+}
+.hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 40px; opacity: 0; animation: fadeUp .6s ease .8s forwards; }
+.hero-tag {
+  padding: 5px 14px;
+  border: 1px solid rgba(88,166,255,.25);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .66rem; color: var(--blue-dim);
+  letter-spacing: .08em; transition: all .2s;
+}
+.hero-tag:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-glow); }
+.hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; opacity: 0; animation: fadeUp .6s ease .9s forwards; }
+.bday-pill {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-top: 28px; padding: 10px 22px;
+  background: rgba(88,166,255,.04);
+  border: 1px solid rgba(88,166,255,.15);
+  border-radius: 40px;
+  opacity: 0; animation: fadeUp .6s ease 1s forwards;
+}
+#bday-countdown { display: flex; align-items: center; gap: 10px; }
+#bday-countdown .cd-num { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--blue); line-height: 1; }
+#bday-countdown .cd-label { font-size: .7rem; letter-spacing: .1em; color: var(--silver-dim); }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── Hero right ── */
+.hero-right { position: relative; overflow: hidden; }
+.hero-right-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--deep) 0%, rgba(88,166,255,.04) 100%);
+}
+.hero-img-grid {
+  position: absolute; inset: 0;
+  display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+}
+.hero-img-grid .cell { overflow: hidden; }
+.hero-img-grid .cell img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: brightness(.55) contrast(1.1) saturate(.6);
+  transition: transform .7s; display: block;
+}
+.hero-img-grid .cell:hover img { transform: scale(1.06); }
+.hero-img-grid::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, var(--black) 0%, transparent 20%),
+              linear-gradient(0deg, rgba(8,8,16,.4) 0%, transparent 40%);
+}
+/* Blue glow corner */
+.hero-right::before {
+  content: ''; position: absolute; top: -100px; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(88,166,255,.1) 0%, transparent 70%);
+  pointer-events: none; z-index: 5;
+}
+
+/* Profile badge */
+.hero-profile-badge {
+  position: absolute; bottom: 44px; left: 50%; transform: translateX(-30%);
+  z-index: 10; padding: 16px 24px; text-align: center;
+  background: rgba(8,8,16,.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(88,166,255,.25);
+  border-radius: 4px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.5), inset 0 1px 0 rgba(88,166,255,.15), 0 0 0 1px rgba(88,166,255,.06);
+}
+.hero-profile-badge .badge-date { font-family: 'Syne',sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--blue-light); display: block; }
+.hero-profile-badge small { font-family: 'JetBrains Mono',monospace; font-size: .6rem; letter-spacing: .18em; text-transform: uppercase; color: rgba(139,148,158,.8); display: block; margin-top: 4px; }
+
+/* Scroll hint */
+.hero-scroll { position: absolute; bottom: 32px; left: 26%; transform: translateX(-50%); z-index: 6; }
+
+/* Vertical line center */
+.hero::after {
+  content: ''; position: absolute; left: 50%; top: 10%; height: 80%;
+  width: 1px; background: linear-gradient(180deg, transparent, rgba(88,166,255,.2), transparent);
+  z-index: 1; pointer-events: none;
+}
+
+/* ── ABOUT STRIP ── */
+.about-strip {
+  background: var(--deep); padding: 80px 72px;
+  display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: center;
+}
+.about-img-wrap { position: relative; }
+.about-img-wrap img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; filter: brightness(.8) contrast(1.05) saturate(.8); }
+.about-img-wrap::before {
+  content: ''; position: absolute; top: -12px; left: -12px; right: 12px; bottom: 12px;
+  border: 1px solid rgba(88,166,255,.2); z-index: 0; pointer-events: none;
+}
+.about-img-wrap img { position: relative; z-index: 1; }
+.about-text h2 { font-size: clamp(2rem,3vw,3.2rem); color: var(--white); margin-bottom: 24px; }
+.about-text p { font-size: 1rem; line-height: 1.85; color: var(--silver-dim); margin-bottom: 18px; }
+.about-text .callout {
+  border-left: 2px solid var(--blue);
+  padding-left: 20px;
+  font-family: 'Instrument Serif', serif;
+  font-style: italic; font-size: 1.15rem;
+  color: var(--silver); margin: 28px 0;
+}
+.stats-row {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin: 36px 0;
+  padding: 28px 0;
+  border-top: 1px solid rgba(88,166,255,.12);
+  border-bottom: 1px solid rgba(88,166,255,.12);
+}
+
+/* ── INTERESTS ── */
+.interests { padding: 80px 72px; }
+.interests-header { text-align: center; margin-bottom: 60px; }
+.interests-header h2 { font-size: clamp(2.2rem,3.5vw,4rem); color: var(--white); }
+.interests-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
+.interest-card {
+  background: var(--panel); padding: 48px 36px;
+  position: relative; overflow: hidden; cursor: none;
+  transition: background .3s; text-decoration: none; display: block;
+}
+.interest-card:hover { background: var(--panel2); }
+.interest-card::before {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 2px; background: var(--blue);
+  transform: scaleX(0); transform-origin: left; transition: transform .4s ease;
+}
+.interest-card:hover::before { transform: scaleX(1); }
+/* Blue corner glow on hover */
+.interest-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at top left, rgba(88,166,255,.06) 0%, transparent 60%);
+  opacity: 0; transition: opacity .3s; pointer-events: none;
+}
+.interest-card:hover::after { opacity: 1; }
+.ic-icon { display: block; margin-bottom: 20px; line-height: 1; transition: transform .3s; }
+.interest-card:hover .ic-icon { transform: scale(1.08); }
+.interest-card h3 { font-size: 1.45rem; color: var(--white); margin-bottom: 14px; }
+.interest-card p { font-size: .88rem; line-height: 1.7; color: var(--silver-dim); }
+.interest-link {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 22px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--blue);
+}
+.interest-link svg { width: 14px; transition: transform .25s; }
+.interest-card:hover .interest-link svg { transform: translateX(4px); }
+
+/* ── FEATURED PROJECT STRIP ── */
+.project-strip {
+  background: var(--panel); padding: 80px 72px;
+  border-top: 1px solid rgba(88,166,255,.08);
+}
+.project-strip h2 { font-size: clamp(2rem,3vw,3.4rem); color: var(--white); margin-bottom: 48px; }
+.project-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.proj-card {
+  background: var(--deep);
+  border: 1px solid rgba(88,166,255,.12);
+  padding: 32px 28px;
+  position: relative; overflow: hidden;
+  text-decoration: none; display: block;
+  transition: border-color .3s, background .3s;
+}
+.proj-card:hover { border-color: rgba(88,166,255,.4); background: rgba(88,166,255,.03); }
+.proj-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--blue-dim), var(--blue));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .4s ease;
+}
+.proj-card:hover::before { transform: scaleX(1); }
+.proj-lang {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .62rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--blue-dim); margin-bottom: 16px; display: block;
+}
+.proj-card h3 { font-family: 'Syne',sans-serif; font-size: 1.15rem; color: var(--white); margin-bottom: 10px; }
+.proj-card p { font-size: .84rem; line-height: 1.65; color: var(--silver-dim); margin-bottom: 20px; }
+.proj-links { display: flex; gap: 14px; }
+.proj-link {
+  font-family: 'JetBrains Mono',monospace;
+  font-size: .64rem; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--blue); text-decoration: none;
+  display: flex; align-items: center; gap: 6px;
+  transition: color .2s;
+}
+.proj-link:hover { color: var(--blue-light); }
+.proj-link svg { width: 12px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+/* ── PHOTOGRAPHY PREVIEW ── */
+.photo-preview { padding: 80px 72px; background: var(--deep); }
+.photo-preview-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 48px; }
+.photo-preview-header h2 { font-size: clamp(2rem,3vw,3.4rem); color: var(--white); }
+.photo-mosaic { display: grid; grid-template-columns: repeat(4,1fr); gap: 3px; }
+.photo-mosaic .pm-cell { overflow: hidden; }
+.photo-mosaic .pm-cell img { width: 100%; height: 240px; object-fit: cover; display: block; filter: brightness(.72) contrast(1.06) saturate(.75); transition: transform .5s, filter .3s; }
+.photo-mosaic .pm-cell:hover img { transform: scale(1.06); filter: brightness(.9) contrast(1.08) saturate(.9); }
+.pm-tall { grid-row: span 2; }
+.pm-tall img { height: 483px !important; }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-right { height: 50vh; }
+  .hero-left { padding: 48px 24px; }
+  .about-strip { grid-template-columns: 1fr; padding: 48px 24px; gap: 40px; }
+  .interests { padding: 48px 24px; }
+  .interests-grid { grid-template-columns: 1fr; }
+  .project-strip { padding: 48px 24px; }
+  .project-cards { grid-template-columns: 1fr; }
+  .photo-preview { padding: 48px 24px; }
+  .photo-mosaic { grid-template-columns: repeat(2,1fr); }
+  .pm-tall img { height: 240px !important; }
+  .pm-tall { grid-row: span 1; }
+}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-mono"><span>const </span>portfolio = new <span>Shah</span>()</div>
+  <div class="splash-name" id="splash-name"></div>
+  <div class="splash-bar-wrap"><div class="splash-bar-fill"></div></div>
+</div>
+
+<div id="scroll-progress"></div>
+<div id="page-transition"></div>
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+
+<div class="social-float">
+  <a href="https://github.com/coder1239756" target="_blank" title="GitHub">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="16"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.254-.447-1.27.098-2.646 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.376.202 2.392.1 2.646.64.698 1.028 1.591 1.028 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+  </a>
+  <a href="https://www.instagram.com/ghostofcaldera1" target="_blank" title="Instagram">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+  </a>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">D<span>.</span>S</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="work.html">Work</a></li>
+    <li><a href="photography.html">Photography</a></li>
+    <li><a href="connect.html">Connect</a></li>
+  </ul>
+  <a href="https://www.instagram.com/ghostofcaldera1" target="_blank" class="nav-gh">@ghostofcaldera1</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero page">
+  <div class="hero-left">
+    <div class="hero-mono">Portfolio · 2025</div>
+    <h1 class="hero-name"><span class="blue-text">Drish</span></h1>
+    <span class="hero-last">Shah</span>
+    <div class="hero-typewriter-wrap">
+      <span id="typewriter" data-words='["// coder. builder. creator.","// shoots stills. writes code.","// cricket, volleyball, football.","// @ghostofcaldera1","// born 24 September."]'></span>
+    </div>
+    <p class="hero-desc">
+      Developer by logic, photographer by instinct, athlete by nature. 
+      Building things that work and capturing moments worth keeping.
+    </p>
+    <div class="hero-tags">
+      <span class="hero-tag">HTML / CSS / JS</span>
+      <span class="hero-tag">Photography</span>
+      <span class="hero-tag">Sketching</span>
+      <span class="hero-tag">Cricket</span>
+      <span class="hero-tag">Volleyball</span>
+    </div>
+    <div class="hero-ctas">
+      <a href="work.html" class="btn btn-fill">View My Work</a>
+      <a href="photography.html" class="btn">Photography</a>
+    </div>
+    <div class="bday-pill">
+      <div id="bday-countdown">
+        <span class="cd-num">-</span>
+        <span class="cd-label">loading...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-right-bg"></div>
+    <div class="hero-img-grid">
+      <div class="cell"><img src="images/horse-sunset.jpg" alt="Photography"></div>
+      <div class="cell"><img src="images/flower-orange.jpg" alt="Photography"></div>
+      <div class="cell"><img src="images/river-sunset.jpg" alt="Photography"></div>
+      <div class="cell"><img src="images/sunset-mountain.jpg" alt="Photography"></div>
+    </div>
+    <div class="hero-profile-badge">
+      <span class="badge-date">24 September</span>
+      <small>Born to build</small>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>Drish Shah</span><span class="dot">/</span>
+    <span>Coder</span><span class="dot">/</span>
+    <span>Photographer</span><span class="dot">/</span>
+    <span>Sketching</span><span class="dot">/</span>
+    <span>Cricket</span><span class="dot">/</span>
+    <span>Volleyball</span><span class="dot">/</span>
+    <span>Football</span><span class="dot">/</span>
+    <span>September 24th</span><span class="dot">/</span>
+    <span>@ghostofcaldera1</span><span class="dot">/</span>
+    <span>Drish Shah</span><span class="dot">/</span>
+    <span>Coder</span><span class="dot">/</span>
+    <span>Photographer</span><span class="dot">/</span>
+    <span>Sketching</span><span class="dot">/</span>
+    <span>Cricket</span><span class="dot">/</span>
+    <span>Volleyball</span><span class="dot">/</span>
+    <span>Football</span><span class="dot">/</span>
+    <span>September 24th</span><span class="dot">/</span>
+    <span>@ghostofcaldera1</span><span class="dot">/</span>
+  </div>
+</div>
+
+<!-- ABOUT STRIP -->
+<section class="about-strip reveal">
+  <div class="about-img-wrap tilt-card">
+    <img src="images/profile-camera.jpg" alt="Drish Shah">
+  </div>
+  <div class="about-text">
+    <span class="section-tag">About Drish</span>
+    <h2>Builder. Creator. <em class="blue-text serif-italic">Athlete.</em></h2>
+    <p>
+      Drish Shah is someone who moves between worlds without losing himself in any of them. 
+      One moment he is pushing code, the next he is behind a lens finding the light that 
+      everyone else walks past.
+    </p>
+    <div class="callout">
+      "He builds the things he cannot find and photographs the things everyone else forgets to look at."
+    </div>
+    <p>
+      Born on the 24th of September, he brings that same autumn-evening energy to everything — 
+      unhurried, thoughtful, and unexpectedly beautiful.
+    </p>
+    <div class="stats-row">
+      <div class="stat-item">
+        <span class="stat-number" data-count="3">0</span>
+        <span class="stat-label">Sports</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" data-count="5">0</span>
+        <span class="stat-label">Projects</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" style="font-size:2.4rem">inf</span>
+        <span class="stat-label">Frames Shot</span>
+      </div>
+    </div>
+    <a href="about.html" class="btn">Read More</a>
+  </div>
+</section>
+
+<!-- INTERESTS -->
+<section class="interests">
+  <div class="interests-header reveal">
+    <span class="section-tag">Domains</span>
+    <h2>Many worlds, <em class="blue-text serif-italic">one mind</em></h2>
+  </div>
+  <div class="interests-grid">
+    <a href="work.html" class="interest-card tilt-card reveal">
+      <span class="ic-icon">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" width="52" height="52">
+          <rect x="4" y="8" width="56" height="40" rx="3" stroke="#58a6ff" stroke-width="2" fill="rgba(88,166,255,.05)"/>
+          <line x1="4" y1="18" x2="60" y2="18" stroke="#58a6ff" stroke-width="1.2" opacity=".4"/>
+          <circle cx="12" cy="13" r="2.5" fill="#58a6ff" opacity=".4"/>
+          <circle cx="20" cy="13" r="2.5" fill="rgba(88,166,255,.3)"/>
+          <circle cx="28" cy="13" r="2.5" fill="rgba(88,166,255,.2)"/>
+          <text x="12" y="33" font-family="monospace" font-size="8" fill="#58a6ff" opacity=".7">&lt;div&gt;</text>
+          <text x="14" y="41" font-family="monospace" font-size="8" fill="rgba(88,166,255,.45)">code</text>
+          <text x="12" y="48" font-family="monospace" font-size="8" fill="#58a6ff" opacity=".7">&lt;/div&gt;</text>
+          <line x1="20" y1="56" x2="44" y2="56" stroke="#58a6ff" stroke-width="2.5" stroke-linecap="round" opacity=".5"/>
+          <rect x="26" y="48" width="12" height="8" fill="#58a6ff" opacity=".15"/>
+        </svg>
+      </span>
+      <h3>Coding</h3>
+      <p>Web development, creative projects, and building tools that solve real problems. HTML, CSS, JavaScript and beyond.</p>
+      <span class="interest-link">View Projects <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+    </a>
+    <a href="photography.html" class="interest-card tilt-card reveal">
+      <span class="ic-icon">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" width="52" height="52">
+          <rect x="6" y="16" width="52" height="36" rx="4" stroke="#58a6ff" stroke-width="2" fill="rgba(88,166,255,.05)"/>
+          <path d="M22 16 L26 8 L38 8 L42 16" stroke="#58a6ff" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
+          <circle cx="32" cy="34" r="10" stroke="#58a6ff" stroke-width="2" fill="rgba(88,166,255,.06)"/>
+          <circle cx="32" cy="34" r="5.5" stroke="#58a6ff" stroke-width="1.4" opacity=".5"/>
+          <circle cx="32" cy="34" r="2" fill="#58a6ff" opacity=".6"/>
+          <circle cx="52" cy="24" r="2" fill="#58a6ff" opacity=".4"/>
+          <line x1="14" y1="26" x2="20" y2="26" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" opacity=".4"/>
+        </svg>
+      </span>
+      <h3>Photography</h3>
+      <p>Sunsets, silhouettes, flowers, and the quiet moments between — captured through a Nikon with intention.</p>
+      <span class="interest-link">See Gallery <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+    </a>
+    <a href="connect.html" class="interest-card tilt-card reveal">
+      <span class="ic-icon">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" width="52" height="52">
+          <!-- Pencil/sketch icon -->
+          <rect x="10" y="38" width="44" height="6" rx="2" stroke="#58a6ff" stroke-width="1.5" fill="rgba(88,166,255,.05)" transform="rotate(-45 32 41)"/>
+          <path d="M44 12 L52 20 L20 52 L12 52 L12 44 Z" stroke="#58a6ff" stroke-width="2" fill="rgba(88,166,255,.08)" stroke-linejoin="round"/>
+          <line x1="40" y1="16" x2="48" y2="24" stroke="#58a6ff" stroke-width="1.4" opacity=".6"/>
+          <line x1="12" y1="44" x2="12" y2="52" stroke="#58a6ff" stroke-width="1.5" opacity=".5"/>
+          <line x1="12" y1="52" x2="20" y2="52" stroke="#58a6ff" stroke-width="1.5" opacity=".5"/>
+          <!-- sketch lines -->
+          <line x1="20" y1="44" x2="26" y2="38" stroke="#58a6ff" stroke-width=".8" opacity=".3"/>
+          <line x1="26" y1="50" x2="32" y2="44" stroke="#58a6ff" stroke-width=".8" opacity=".3"/>
+          <line x1="32" y1="56" x2="38" y2="50" stroke="#58a6ff" stroke-width=".8" opacity=".3"/>
+        </svg>
+      </span>
+      <h3>Sketching</h3>
+      <p>Art before code, design before build. Sketching is where ideas find their shape before becoming real.</p>
+      <span class="interest-link">Connect <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+    </a>
+  </div>
+</section>
+
+<!-- FEATURED PROJECTS -->
+<section class="project-strip reveal">
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:48px;">
+    <div>
+      <span class="section-tag">Featured Work</span>
+      <h2>Projects that <em class="blue-text serif-italic">ship</em></h2>
+    </div>
+    <a href="work.html" class="btn">All Projects</a>
+  </div>
+  <div class="project-cards">
+    <a href="https://coder1239756.github.io/Jianaa-Portfolio/index.html" target="_blank" class="proj-card tilt-card">
+      <span class="proj-lang">HTML / CSS / JS</span>
+      <h3>Jiana Portfolio</h3>
+      <p>A full multi-page editorial portfolio with animations, masonry gallery, scroll effects, and custom cursor.</p>
+      <div class="proj-links">
+        <span class="proj-link">
+          Live Demo
+          <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </span>
+        <span class="proj-link">
+          GitHub
+          <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        </span>
+      </div>
+    </a>
+    <a href="https://github.com/coder1239756" target="_blank" class="proj-card tilt-card">
+      <span class="proj-lang">HTML / CSS / JS</span>
+      <h3>Anwesha Portfolio</h3>
+      <p>Cinematic black and gold editorial portfolio with birthday experience, cake animation, and memory lane gallery.</p>
+      <div class="proj-links">
+         <span class="proj-link">
+          Live Demo
+          <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </span>
+        <span class="proj-link">
+          GitHub
+          <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        </span>
+      </div>
+    </a>
+    <a href="https://github.com/coder1239756" target="_blank" class="proj-card tilt-card">
+      <span class="proj-lang">HTML / CSS / JS</span>
+      <h3>This Portfolio</h3>
+      <p>You are looking at it. Black, blue, and silver editorial site with custom cursor, splash screen, and more.</p>
+      <div class="proj-links">
+         <span class="proj-link">
+          Live Demo
+          <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </span>
+        <span class="proj-link">
+          GitHub
+          <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        </span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- PHOTO PREVIEW -->
+<section class="photo-preview">
+  <div class="photo-preview-header reveal">
+    <div>
+      <span class="section-tag">Lens Work</span>
+      <h2>Through <em class="blue-text serif-italic">the viewfinder</em></h2>
+    </div>
+    <a href="photography.html" class="btn">Full Gallery</a>
+  </div>
+  <div class="photo-mosaic reveal">
+    <div class="pm-cell pm-tall"><img src="images/horse-sunset.jpg" alt=""></div>
+    <div class="pm-cell"><img src="images/flower-orange.jpg" alt=""></div>
+    <div class="pm-cell"><img src="images/guitar1.jpg" alt=""></div>
+    <div class="pm-cell"><img src="images/river-sunset.jpg" alt=""></div>
+    <div class="pm-cell"><img src="images/dusk-sky.jpg" alt=""></div>
+    <div class="pm-cell"><img src="images/flower-white.jpg" alt=""></div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-name">Drish Shah</span>
+  <span class="footer-meta">Portfolio · 2025 · Made with love</span>
+ <a href="https://www.instagram.com/ghostofcaldera1" target="_blank">@ghostofcaldera1</a>
+</footer>
+
+<script src="script.js"></script>
+<script>
+// Splash letter animation
+(function(){
+  const name = 'DRISH';
+  const el = document.getElementById('splash-name');
+  if (!el) return;
+  name.split('').forEach((ch,i) => {
+    const s = document.createElement('span');
+    s.className = 'sl' + (i === 0 ? ' blue' : '');
+    s.textContent = ch;
+    s.style.animationDelay = (.55 + i*.07) + 's';
+    el.appendChild(s);
+  });
+})();
+</script>
+</body>
+</html>

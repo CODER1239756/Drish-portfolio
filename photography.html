@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photography — Drish Shah</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.photo-hero { position:relative; height:72vh; display:flex; align-items:flex-end; background:var(--black); overflow:hidden; }
+.ph-bg-grid { position:absolute; inset:0; display:grid; grid-template-columns:repeat(4,1fr); gap:2px; }
+.ph-bg-grid .pgc { overflow:hidden; }
+.ph-bg-grid .pgc img { width:100%; height:100%; object-fit:cover; filter:brightness(.28) contrast(1.1) saturate(.5); display:block; }
+.ph-overlay { position:absolute; inset:0; background:linear-gradient(0deg,var(--black) 0%,rgba(8,8,16,.2) 70%,transparent 100%); }
+.ph-content { position:relative; z-index:2; padding:0 72px 60px; width:100%; display:flex; align-items:flex-end; justify-content:space-between; }
+.ph-title h1 { font-size:clamp(4rem,9vw,11rem); color:var(--white); font-weight:800; line-height:.9; letter-spacing:-.02em; }
+.ph-title h1 em { color:var(--blue); }
+.ph-title p { font-family:'Instrument Serif',serif; font-style:italic; font-size:1.1rem; color:var(--silver-dim); margin-top:16px; max-width:380px; line-height:1.6; }
+.ph-count { text-align:right; padding-bottom:8px; }
+.ph-count .pnum { font-family:'Syne',sans-serif; font-size:5rem; font-weight:800; color:rgba(88,166,255,.25); line-height:1; display:block; }
+.ph-count .plabel { font-family:'JetBrains Mono',monospace; font-size:.64rem; letter-spacing:.18em; text-transform:uppercase; color:var(--blue-dim); }
+
+/* Filter */
+.filter-bar { background:var(--deep); border-bottom:1px solid rgba(88,166,255,.1); display:flex; padding:0 72px; position:sticky; top:72px; z-index:500; align-items:center; }
+.fb-tab { padding:18px 22px; font-family:'JetBrains Mono',monospace; font-size:.67rem; letter-spacing:.12em; text-transform:uppercase; color:var(--silver-dim); background:transparent; border:none; border-bottom:2px solid transparent; cursor:none; transition:color .2s,border-color .2s; margin-bottom:-1px; }
+.fb-tab.active,.fb-tab:hover { color:var(--blue); border-bottom-color:var(--blue); }
+.fb-count { margin-left:auto; font-family:'JetBrains Mono',monospace; font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--blue-dim); }
+
+/* Masonry */
+.masonry-wrap { padding:3px; columns:3; column-gap:3px; background:var(--black); }
+.m-item { break-inside:avoid; margin-bottom:3px; position:relative; overflow:hidden; cursor:none; display:block; }
+.m-item img { width:100%; display:block; filter:brightness(.76) contrast(1.08) saturate(.78); transition:transform .6s, filter .35s; }
+.m-item:hover img { transform:scale(1.04); filter:brightness(.95) contrast(1.1) saturate(.95); }
+.m-overlay { position:absolute; inset:0; background:linear-gradient(0deg,rgba(8,8,16,.88) 0%,transparent 55%); opacity:0; transition:opacity .3s; display:flex; align-items:flex-end; padding:20px; }
+.m-item:hover .m-overlay { opacity:1; }
+.m-meta { }
+.m-tag { font-family:'JetBrains Mono',monospace; font-size:.6rem; letter-spacing:.14em; text-transform:uppercase; color:var(--blue-dim); display:block; margin-bottom:5px; }
+.m-caption { font-family:'Instrument Serif',serif; font-style:italic; font-size:.95rem; color:var(--silver-dim); }
+
+/* Spotlight */
+.spotlight { padding:80px 72px; background:var(--deep); }
+.spotlight-inner { display:grid; grid-template-columns:1.3fr 1fr; gap:64px; align-items:center; }
+.spotlight-img { position:relative; overflow:hidden; }
+.spotlight-img img { width:100%; display:block; filter:brightness(.8) contrast(1.06) saturate(.8); }
+.spotlight-img::before { content:''; position:absolute; inset:-8px; border:1px solid rgba(88,166,255,.2); z-index:-1; pointer-events:none; }
+.spotlight-text h2 { font-size:clamp(2rem,3vw,3rem); color:var(--white); margin-bottom:24px; }
+.spotlight-text p { font-size:.95rem; line-height:1.8; color:var(--silver-dim); margin-bottom:16px; }
+.photo-meta { margin-top:36px; display:grid; grid-template-columns:1fr 1fr; gap:2px; }
+.pm-item { background:var(--panel); padding:18px 20px; }
+.pm-item span { display:block; font-family:'JetBrains Mono',monospace; font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:var(--blue-dim); margin-bottom:5px; }
+.pm-item strong { color:var(--white); font-family:'Syne',sans-serif; font-size:.95rem; font-weight:500; }
+
+/* Viewer */
+.viewer { position:fixed; inset:0; background:rgba(5,5,10,.97); display:flex; align-items:center; justify-content:center; z-index:9999; opacity:0; pointer-events:none; transition:opacity .35s; }
+.viewer.open { opacity:1; pointer-events:all; }
+.viewer-inner { max-width:86vw; max-height:88vh; position:relative; }
+.viewer img { max-width:86vw; max-height:88vh; object-fit:contain; display:block; box-shadow:0 40px 120px rgba(0,0,0,.9); }
+.v-close { position:absolute; top:-36px; right:0; background:none; border:none; color:var(--silver-dim); font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; cursor:none; transition:color .2s; }
+.v-close:hover { color:var(--blue); }
+.v-nav { position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; background:rgba(88,166,255,.06); border:1px solid rgba(88,166,255,.15); border-radius:50%; color:var(--silver-dim); display:flex; align-items:center; justify-content:center; cursor:none; font-size:1.2rem; transition:background .2s,color .2s; }
+.v-nav:hover { background:rgba(88,166,255,.18); color:var(--blue); }
+.v-prev { left:-64px; } .v-next { right:-64px; }
+.v-counter { position:absolute; bottom:-32px; left:0; right:0; text-align:center; font-family:'JetBrains Mono',monospace; font-size:.64rem; letter-spacing:.16em; text-transform:uppercase; color:var(--silver-dim); }
+
+@media(max-width:900px){
+  .ph-content { flex-direction:column; align-items:flex-start; gap:16px; padding:0 24px 48px; }
+  .filter-bar { padding:0 16px; overflow-x:auto; }
+  .masonry-wrap { columns:2; }
+  .spotlight { padding:48px 24px; }
+  .spotlight-inner { grid-template-columns:1fr; }
+}
+@media(max-width:480px){ .masonry-wrap { columns:1; } }
+</style>
+</head>
+<body>
+<div id="scroll-progress"></div>
+<div id="page-transition"></div>
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+<nav>
+  <a href="index.html" class="nav-logo">D<span>.</span>S</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="work.html">Work</a></li>
+    <li><a href="photography.html">Photography</a></li>
+    <li><a href="connect.html">Connect</a></li>
+  </ul>
+  <a href="https://github.com/coder1239756" target="_blank" class="nav-gh">github/coder1239756</a>
+</nav>
+
+<div class="page photo-hero">
+  <div class="ph-bg-grid">
+    <div class="pgc"><img src="images/horse-sunset.jpg" alt=""></div>
+    <div class="pgc"><img src="images/flower-orange.jpg" alt=""></div>
+    <div class="pgc"><img src="images/river-sunset.jpg" alt=""></div>
+    <div class="pgc"><img src="images/sunset-mountain.jpg" alt=""></div>
+  </div>
+  <div class="ph-overlay"></div>
+  <div class="ph-content">
+    <div class="ph-title">
+      <h1 class="fade-up d1">The <em>Lens</em></h1>
+      <p class="fade-up d2">Stills from a mind that sees before it looks.</p>
+    </div>
+    <div class="ph-count fade-up d3">
+      <span class="pnum">11</span>
+      <span class="plabel">Photographs</span>
+    </div>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <button class="fb-tab active" data-filter="all">All</button>
+  <button class="fb-tab" data-filter="landscape">Landscape</button>
+  <button class="fb-tab" data-filter="macro">Macro</button>
+  <button class="fb-tab" data-filter="still">Still Life</button>
+  <span class="fb-count" id="ph-count">11 photos</span>
+</div>
+
+<div class="masonry-wrap" id="masonry">
+  <div class="m-item" data-cat="landscape"><img src="images/horse-sunset.jpg" loading="lazy" alt=""><div class="m-overlay"><div class="m-meta"><span class="m-tag">Landscape</span><span class="m-caption">The silhouette at golden hour</span></div></div></div>
+  <div class="m-item" data-cat="macro"><img src="images/flower-orange.jpg" loading="lazy" alt=""><div class="m-overlay"><div class="m-meta"><span class="m-tag">Macro</span><span class="m-caption">Hibiscus catching the last light</span></div></div></div>
+  <div class="m-item" data-cat="still"><img src="images/guitar1.jpg" loading="lazy" alt=""><div class="m-overlay"><div class="m-meta"><span class="m-tag">Still Life</span><span class="m-caption">Yamaha in the blue hour</span></div></div></div>
+  <div class="m-item" data-cat="landscape"><img src="images/river-sunset.jpg" loading="lazy" alt=""><div class="m-overlay"><div class="m-meta"><span class="m-tag">Landscape</span><span class="m-caption">Dusk on the river</span></div></div></div>
+  <div class="m-item" data-cat="landscape"><img src="images/sunset-mountain.jpg" loading="lazy" alt=""><div class="m-overlay"><div class="m-meta"><span class="m-tag">Landscape</span><span class="m-caption">Mountains at the edge of evening</span></div></div></div>
+  <div class="m-item" data-cat="macro"><img src="images/flower-white.jpg" loading="lazy" alt=""><div class="m-overlay"><div class="m-meta"><span class="m-tag">Macro</span><span class="m-caption">White hibiscus in morning light</span></div></div></div>
+  <div class="m-item" data-cat="landscape"><img src="images/dusk-sky.jpg" loading="lazy" alt=""><div class="m-overlay"><div class="m-meta"><span class="m-tag">Landscape</span><span class="m-caption">The neighbourhood at blue hour</span></div></div></div>
+  <div class="m-item" data-cat="still"><img src="images/guitar2.jpg" loading="lazy" alt=""><div class="m-overlay"><div class="m-meta"><span class="m-tag">Still Life</span><span class="m-caption">Strings in shadow</span></div></div></div>
+  <div class="m-item" data-cat="still"><img src="images/teddy.jpg" loading="lazy" alt=""><div class="m-overlay"><div class="m-meta"><span class="m-tag">Still Life</span><span class="m-caption">Amber light and soft textures</span></div></div></div>
+  <div class="m-item" data-cat="still"><img src="images/profile-hoodie.jpg" loading="lazy" alt=""><div class="m-overlay"><div class="m-meta"><span class="m-tag">Portrait</span><span class="m-caption">The ghost of caldera</span></div></div></div>
+  <div class="m-item" data-cat="still"><img src="images/profile-camera.jpg" loading="lazy" alt=""><div class="m-overlay"><div class="m-meta"><span class="m-tag">Portrait</span><span class="m-caption">Behind the Nikon</span></div></div></div>
+</div>
+
+<section class="spotlight">
+  <div class="spotlight-inner reveal">
+    <div class="spotlight-img">
+      <img src="images/horse-sunset.jpg" alt="Horse silhouette at sunset">
+    </div>
+    <div class="spotlight-text">
+      <span class="section-tag">// featured_shot</span>
+      <h2>The frame that <em class="blue-text serif-italic">stopped time</em></h2>
+      <p>A horse statue silhouetted against a setting sun — found while wandering with a camera and no plan. The kind of photograph that cannot be planned, only noticed.</p>
+      <p>This is what Drish photographs best: the moments between moments. The light that exists for exactly six seconds before it changes forever.</p>
+      <div class="photo-meta">
+        <div class="pm-item"><span>Camera</span><strong>Nikon DSLR</strong></div>
+        <div class="pm-item"><span>Style</span><strong>Silhouette</strong></div>
+        <div class="pm-item"><span>Time</span><strong>Golden Hour</strong></div>
+        <div class="pm-item"><span>Mood</span><strong>Cinematic</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Viewer -->
+<div class="viewer" id="viewer">
+  <div class="viewer-inner">
+    <button class="v-close" id="v-close">Close</button>
+    <button class="v-nav v-prev" id="v-prev">&#8249;</button>
+    <img id="viewer-img" src="" alt="">
+    <button class="v-nav v-next" id="v-next">&#8250;</button>
+    <span class="v-counter" id="v-counter"></span>
+  </div>
+</div>
+
+<footer>
+  <span class="footer-name">Drish Shah</span>
+  <span class="footer-meta">Portfolio · 2025 · Made with love</span>
+  <a href="https://github.com/coder1239756" target="_blank">github/coder1239756</a>
+</footer>
+<script src="script.js"></script>
+<script>
+// Filter
+const tabs=document.querySelectorAll('.fb-tab');
+const items=document.querySelectorAll('.m-item');
+const countEl=document.getElementById('ph-count');
+tabs.forEach(tab=>{tab.addEventListener('click',()=>{tabs.forEach(t=>t.classList.remove('active'));tab.classList.add('active');const f=tab.dataset.filter;let v=0;items.forEach(i=>{const show=f==='all'||i.dataset.cat===f;i.style.display=show?'':'none';if(show)v++;});countEl.textContent=v+' photo'+(v!==1?'s':'');});});
+// Viewer
+const viewer=document.getElementById('viewer'),vImg=document.getElementById('viewer-img'),vCounter=document.getElementById('v-counter');
+let imgs=[],cur=0;
+items.forEach((item,i)=>{imgs.push(item.querySelector('img').src);item.addEventListener('click',()=>openV(i));});
+function openV(i){cur=i;vImg.src=imgs[cur];vCounter.textContent=(cur+1)+' / '+imgs.length;viewer.classList.add('open');}
+document.getElementById('v-close').addEventListener('click',()=>viewer.classList.remove('open'));
+document.getElementById('v-prev').addEventListener('click',()=>{cur=(cur-1+imgs.length)%imgs.length;openV(cur);});
+document.getElementById('v-next').addEventListener('click',()=>{cur=(cur+1)%imgs.length;openV(cur);});
+document.addEventListener('keydown',e=>{if(!viewer.classList.contains('open'))return;if(e.key==='Escape')viewer.classList.remove('open');if(e.key==='ArrowRight'){cur=(cur+1)%imgs.length;openV(cur);}if(e.key==='ArrowLeft'){cur=(cur-1+imgs.length)%imgs.length;openV(cur);}});
+</script>
+</body>
+</html>

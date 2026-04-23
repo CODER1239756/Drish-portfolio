@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connect — Drish Shah</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── CONNECT HERO ── */
+.connect-hero {
+  min-height: 62vh; display: flex; flex-direction: column;
+  justify-content: flex-end; padding: 120px 72px 80px;
+  position: relative; overflow: hidden; background: var(--deep);
+}
+.connect-hero::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: linear-gradient(rgba(88,166,255,.04) 1px,transparent 1px),
+                    linear-gradient(90deg,rgba(88,166,255,.04) 1px,transparent 1px);
+  background-size: 60px 60px;
+}
+.ch-glow {
+  position: absolute; bottom: -120px; left: -80px;
+  width: 500px; height: 400px;
+  background: radial-gradient(circle, rgba(88,166,255,.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.ch-content { position: relative; z-index: 2; }
+.ch-content h1 { font-size: clamp(3.5rem,7vw,9rem); color: var(--white); font-weight: 800; line-height: .92; margin-bottom: 24px; }
+.ch-content h1 em { color: var(--blue); font-style: italic; }
+.ch-content p { font-family:'Instrument Serif',serif; font-style: italic; font-size: 1.2rem; color: var(--silver-dim); max-width: 520px; line-height: 1.6; }
+
+/* ── MAIN CONNECT GRID ── */
+.connect-grid {
+  padding: 80px 72px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 48px; align-items: start;
+  background: var(--black);
+}
+
+/* GitHub card */
+.gh-card {
+  background: var(--panel);
+  border: 1px solid rgba(88,166,255,.15);
+  padding: 48px 44px;
+  position: relative; overflow: hidden;
+  transition: border-color .3s;
+}
+.gh-card:hover { border-color: rgba(88,166,255,.4); }
+.gh-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--blue-dim), var(--blue));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .4s;
+}
+.gh-card:hover::before { transform: scaleX(1); }
+.gh-card-icon {
+  width: 56px; height: 56px; background: rgba(88,166,255,.08);
+  border: 1px solid rgba(88,166,255,.2); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 24px;
+}
+.gh-card-icon svg { width: 28px; fill: var(--blue); }
+.gh-handle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.4rem; font-weight: 500; color: var(--blue-light);
+  display: block; margin-bottom: 14px; letter-spacing: .04em;
+}
+.gh-card p { font-size: .9rem; line-height: 1.75; color: var(--silver-dim); margin-bottom: 32px; }
+.gh-stats { display: flex; gap: 32px; margin-bottom: 32px; }
+.gh-stat span { font-family:'Syne',sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--blue); display: block; line-height: 1; }
+.gh-stat small { font-family:'JetBrains Mono',monospace; font-size: .6rem; letter-spacing: .14em; text-transform: uppercase; color: var(--silver-dim); display: block; margin-top: 4px; }
+.gh-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 13px 28px; background: var(--blue); color: var(--black);
+  font-family: 'JetBrains Mono',monospace; font-size: .72rem;
+  letter-spacing: .1em; text-transform: uppercase; text-decoration: none;
+  border-radius: 2px; cursor: none;
+  transition: background .2s, transform .2s;
+  box-shadow: 0 4px 20px rgba(88,166,255,.3);
+}
+.gh-btn:hover { background: var(--blue-light); transform: translateY(-2px); }
+.gh-btn svg { width: 16px; fill: currentColor; }
+
+/* Instagram card */
+.ig-card {
+  background: var(--panel);
+  border: 1px solid rgba(88,166,255,.15);
+  padding: 48px 44px;
+  position: relative; overflow: hidden;
+  transition: border-color .3s;
+}
+.ig-card:hover { border-color: rgba(88,166,255,.4); }
+.ig-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, #833ab4, #fd1d1d, #fcb045);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .4s;
+}
+.ig-card:hover::before { transform: scaleX(1); }
+.ig-card-icon {
+  width: 56px; height: 56px; background: rgba(88,166,255,.08);
+  border: 1px solid rgba(88,166,255,.2); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 24px;
+}
+.ig-handle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.4rem; font-weight: 500; color: var(--blue-light);
+  display: block; margin-bottom: 14px;
+}
+.ig-card p { font-size: .9rem; line-height: 1.75; color: var(--silver-dim); margin-bottom: 32px; }
+.ig-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 13px 28px;
+  background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+  color: var(--white); font-family: 'JetBrains Mono',monospace;
+  font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+  text-decoration: none; border-radius: 2px; cursor: none;
+  transition: opacity .2s, transform .2s;
+  box-shadow: 0 4px 20px rgba(253,29,29,.25);
+}
+.ig-btn:hover { opacity: .9; transform: translateY(-2px); }
+.ig-btn svg { width: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+
+/* ── FEATURED REELS / INSTAGRAM SECTION ── */
+.reels-section {
+  padding: 80px 72px; background: var(--deep);
+  border-top: 1px solid rgba(88,166,255,.08);
+}
+.reels-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 48px; }
+.reels-header h2 { font-size: clamp(2rem,3vw,3.2rem); color: var(--white); }
+.reels-note { font-family:'JetBrains Mono',monospace; font-size:.66rem; color:var(--blue-dim); letter-spacing:.08em; }
+.reels-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 3px; }
+.reel-item {
+  position: relative; overflow: hidden; cursor: none;
+  aspect-ratio: 9/16;
+  background: var(--panel);
+  border: 1px solid rgba(88,166,255,.1);
+  display: flex; align-items: center; justify-content: center;
+}
+.reel-item img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: brightness(.65) contrast(1.08) saturate(.7);
+  transition: transform .6s, filter .3s;
+}
+.reel-item:hover img { transform: scale(1.05); filter: brightness(.85) contrast(1.08) saturate(.9); }
+.reel-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(0deg, rgba(8,8,16,.9) 0%, transparent 55%);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .3s;
+}
+.reel-item:hover .reel-overlay { opacity: 1; }
+.reel-play {
+  width: 52px; height: 52px;
+  background: rgba(88,166,255,.18);
+  border: 1.5px solid rgba(88,166,255,.4);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.reel-play svg { width: 20px; fill: var(--blue-light); margin-left: 4px; }
+.reel-caption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 20px 16px 14px;
+  background: linear-gradient(0deg, rgba(8,8,16,.95), transparent);
+}
+.reel-caption .rc-tag {
+  font-family: 'JetBrains Mono',monospace; font-size: .58rem;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--blue-dim);
+  display: block; margin-bottom: 4px;
+}
+.reel-caption .rc-title {
+  font-family: 'Instrument Serif',serif; font-style: italic;
+  font-size: .9rem; color: var(--silver-dim);
+}
+.reel-ig-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'JetBrains Mono',monospace; font-size: .6rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--blue); text-decoration: none;
+  transition: color .2s;
+}
+.reel-ig-link:hover { color: var(--blue-light); }
+.reel-ig-link svg { width: 11px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+/* ── ANWESHA BESTFRIEND SECTION ── */
+.bff-section {
+  padding: 100px 72px;
+  background: var(--black);
+  position: relative; overflow: hidden;
+}
+.bff-bg-text {
+  position: absolute; right: -40px; top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Syne',sans-serif;
+  font-size: 22vw; font-weight: 800;
+  color: rgba(88,166,255,.025); line-height: 1;
+  pointer-events: none; user-select: none;
+}
+.bff-inner { position: relative; z-index: 2; }
+.bff-heading { margin-bottom: 64px; }
+.bff-heading h2 { font-size: clamp(2.4rem,3.5vw,4rem); color: var(--white); }
+.bff-layout {
+  display: grid; grid-template-columns: 380px 1fr;
+  gap: 72px; align-items: start;
+}
+
+/* Liquid glass card — blue tint */
+.bff-card {
+  padding: 40px 36px; border-radius: 16px;
+  position: relative; overflow: hidden;
+  background: rgba(88,166,255,.04);
+  backdrop-filter: blur(28px) saturate(200%) brightness(1.1);
+  -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(1.1);
+  border: 1px solid rgba(88,166,255,.18);
+  border-bottom-color: rgba(88,166,255,.06);
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.55),
+    0 4px 16px rgba(0,0,0,.3),
+    inset 0 1.5px 0 rgba(88,166,255,.2),
+    inset 0 -1px 0 rgba(0,0,0,.1),
+    0 0 0 1px rgba(88,166,255,.06);
+}
+.bff-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 50%;
+  background: linear-gradient(180deg, rgba(88,166,255,.06) 0%, transparent 100%);
+  border-radius: 16px 16px 0 0; pointer-events: none;
+}
+.bff-card-glow {
+  position: absolute; top: -60px; left: -40px;
+  width: 240px; height: 200px;
+  background: radial-gradient(ellipse, rgba(88,166,255,.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.bff-card-top {
+  display: flex; align-items: center; gap: 18px;
+  margin-bottom: 28px; position: relative; z-index: 1;
+}
+.bff-avatar {
+  width: 64px; height: 64px; border-radius: 50%;
+  overflow: hidden; flex-shrink: 0;
+  border: 2px solid rgba(88,166,255,.3);
+  box-shadow: 0 4px 20px rgba(88,166,255,.2);
+}
+.bff-avatar img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.85) saturate(.8); }
+.bff-name { display:block; font-family:'Syne',sans-serif; font-size:1.2rem; font-weight:700; color:var(--white); margin-bottom:5px; }
+.bff-handle { display:flex; align-items:center; gap:6px; font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--blue-dim); }
+.bff-handle svg { width:12px; fill:none; stroke:currentColor; stroke-width:1.8; }
+.bff-divider { height:1px; background:linear-gradient(90deg,transparent,rgba(88,166,255,.2),transparent); margin:0 0 22px; position:relative; z-index:1; }
+.bff-meta { display:flex; flex-direction:column; gap:12px; margin-bottom:24px; position:relative; z-index:1; }
+.bff-meta-item span { display:block; font-family:'JetBrains Mono',monospace; font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:var(--blue-dim); margin-bottom:2px; }
+.bff-meta-item strong { color:var(--white); font-family:'Space Grotesk',sans-serif; font-size:.88rem; font-weight:400; }
+.bff-quote { font-family:'Instrument Serif',serif; font-style:italic; font-size:1.0rem; color:rgba(201,209,217,.65); line-height:1.6; margin-bottom:26px; position:relative; z-index:1; }
+.bff-ig-btn {
+  display:inline-flex; align-items:center; gap:8px; padding:11px 20px; border-radius:40px;
+  font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:.1em; text-transform:uppercase;
+  text-decoration:none; cursor:none; color:var(--black);
+  background:linear-gradient(135deg,var(--blue-dim),var(--blue-light));
+  box-shadow:0 4px 20px rgba(88,166,255,.3);
+  transition:transform .25s, box-shadow .25s;
+  position:relative; z-index:1;
+}
+.bff-ig-btn:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(88,166,255,.45); }
+.bff-ig-btn svg { width:14px; fill:none; stroke:currentColor; stroke-width:1.8; }
+
+.bff-text p { font-size:1.0rem; line-height:1.85; color:var(--silver-dim); margin-bottom:18px; }
+.bff-callout {
+  display:flex; gap:16px; align-items:flex-start;
+  background:rgba(88,166,255,.04);
+  border:1px solid rgba(88,166,255,.12);
+  border-radius:10px; padding:22px 24px; margin:26px 0;
+  backdrop-filter:blur(10px);
+}
+.bff-callout-dot {
+  width:7px; height:7px; border-radius:50%;
+  background:var(--blue); flex-shrink:0; margin-top:9px;
+  box-shadow:0 0 10px rgba(88,166,255,.6);
+}
+.bff-callout p { font-family:'Instrument Serif',serif; font-style:italic; font-size:1.1rem; color:var(--white) !important; margin:0 !important; line-height:1.6; }
+
+/* ── CLOSING ── */
+.closing {
+  padding: 100px 72px; text-align: center;
+  background: var(--deep); position: relative; overflow: hidden;
+}
+.closing::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, rgba(88,166,255,.05) 0%, transparent 70%);
+}
+.closing-inner { position: relative; z-index: 1; }
+.closing-mono {
+  font-family:'JetBrains Mono',monospace; font-size:.72rem;
+  letter-spacing:.2em; color:var(--blue-dim);
+  margin-bottom:24px; display:block;
+}
+.closing h2 { font-size:clamp(2.5rem,5vw,6rem); color:var(--white); margin-bottom:20px; }
+.closing h2 em { color:var(--blue); }
+.closing p { font-family:'Instrument Serif',serif; font-style:italic; font-size:1.15rem; color:var(--silver-dim); max-width:540px; margin:0 auto 48px; line-height:1.7; }
+.closing-actions { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+
+@media(max-width:900px){
+  .connect-hero { padding:80px 24px 60px; }
+  .connect-grid { grid-template-columns:1fr; padding:48px 24px; }
+  .reels-section { padding:60px 24px; }
+  .reels-grid { grid-template-columns:1fr; }
+  .bff-section { padding:60px 24px; }
+  .bff-layout { grid-template-columns:1fr; gap:40px; }
+  .closing { padding:60px 24px; }
+}
+</style>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+<div id="page-transition"></div>
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">D<span>.</span>S</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="work.html">Work</a></li>
+    <li><a href="photography.html">Photography</a></li>
+    <li><a href="connect.html">Connect</a></li>
+  </ul>
+  <a href="https://github.com/coder1239756" target="_blank" class="nav-gh">github/coder1239756</a>
+</nav>
+
+<!-- HERO -->
+<div class="page connect-hero">
+  <div class="ch-glow"></div>
+  <div class="ch-content">
+    <span class="section-tag fade-up d1">// connect.init()</span>
+    <h1 class="fade-up d2">Find me,<br><em>follow me.</em></h1>
+    <p class="fade-up d3">On GitHub building things. On Instagram photographing them. Always somewhere between a terminal and a camera.</p>
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>@ghostofcaldera1</span><span class="dot">/</span>
+    <span>github/coder1239756</span><span class="dot">/</span>
+    <span>Drish Shah</span><span class="dot">/</span>
+    <span>Coder</span><span class="dot">/</span>
+    <span>Photographer</span><span class="dot">/</span>
+    <span>Athlete</span><span class="dot">/</span>
+    <span>September 24th</span><span class="dot">/</span>
+    <span>@ghostofcaldera1</span><span class="dot">/</span>
+    <span>github/coder1239756</span><span class="dot">/</span>
+    <span>Drish Shah</span><span class="dot">/</span>
+    <span>Coder</span><span class="dot">/</span>
+    <span>Photographer</span><span class="dot">/</span>
+    <span>Athlete</span><span class="dot">/</span>
+    <span>September 24th</span><span class="dot">/</span>
+  </div>
+</div>
+
+<!-- CONNECT GRID -->
+<section class="connect-grid">
+  <!-- GitHub -->
+  <div class="gh-card tilt-card reveal">
+    <div class="gh-card-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.254-.447-1.27.098-2.646 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.376.202 2.392.1 2.646.64.698 1.028 1.591 1.028 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+    </div>
+    <span class="gh-handle">coder1239756</span>
+    <p>Every project documented. Every portfolio shipped. The commit history tells its own story — check it out to see what has been built and what is coming next.</p>
+    <div class="gh-stats">
+      <div class="gh-stat"><span>5+</span><small>Projects</small></div>
+      <div class="gh-stat"><span>2025</span><small>Active</small></div>
+    </div>
+    <a href="https://github.com/coder1239756" target="_blank" class="gh-btn">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.254-.447-1.27.098-2.646 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.376.202 2.392.1 2.646.64.698 1.028 1.591 1.028 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+      View GitHub
+    </a>
+  </div>
+
+  <!-- Instagram -->
+  <div class="ig-card tilt-card reveal">
+    <div class="ig-card-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5" width="28"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="var(--blue)" stroke="none"/></svg>
+    </div>
+    <span class="ig-handle">@ghostofcaldera1</span>
+    <p>Photography, moments, and the occasional reel. The feed is a record of everything worth keeping — sunsets, silhouettes, and the quiet in-between hours.</p>
+    <a href="https://www.instagram.com/ghostofcaldera1" target="_blank" class="ig-btn">
+      <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="white" stroke="none"/></svg>
+      Follow on Instagram
+    </a>
+  </div>
+</section>
+
+<!-- REELS / INSTAGRAM CONTENT -->
+<section class="reels-section">
+  <div class="reels-header reveal">
+    <div>
+      <span class="section-tag">// instagram.reels</span>
+      <h2>From the <em class="blue-text serif-italic">feed</em></h2>
+    </div>
+    <a href="https://www.instagram.com/ghostofcaldera1" target="_blank" class="reel-ig-link">
+      View all on Instagram
+      <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+  </div>
+  <div class="reels-grid reveal">
+    <a href="https://www.instagram.com/ghostofcaldera1" target="_blank" class="reel-item">
+      <img src="images/horse-sunset.jpg" alt="">
+      <div class="reel-overlay"><div class="reel-play"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="reel-caption"><span class="rc-tag">Photography</span><span class="rc-title">The silhouette reel</span></div>
+    </a>
+    <a href="https://www.instagram.com/ghostofcaldera1" target="_blank" class="reel-item">
+      <img src="images/flower-orange.jpg" alt="">
+      <div class="reel-overlay"><div class="reel-play"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="reel-caption"><span class="rc-tag">Macro</span><span class="rc-title">Hibiscus close-up</span></div>
+    </a>
+    <a href="https://www.instagram.com/ghostofcaldera1" target="_blank" class="reel-item">
+      <img src="images/guitar1.jpg" alt="">
+      <div class="reel-overlay"><div class="reel-play"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="reel-caption"><span class="rc-tag">Still Life</span><span class="rc-title">Yamaha at night</span></div>
+    </a>
+    <a href="https://www.instagram.com/ghostofcaldera1" target="_blank" class="reel-item">
+      <img src="images/sunset-mountain.jpg" alt="">
+      <div class="reel-overlay"><div class="reel-play"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="reel-caption"><span class="rc-tag">Landscape</span><span class="rc-title">Mountains and towers</span></div>
+    </a>
+    <a href="https://www.instagram.com/ghostofcaldera1" target="_blank" class="reel-item">
+      <img src="images/river-sunset.jpg" alt="">
+      <div class="reel-overlay"><div class="reel-play"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="reel-caption"><span class="rc-tag">Landscape</span><span class="rc-title">River at dusk</span></div>
+    </a>
+    <a href="https://www.instagram.com/ghostofcaldera1" target="_blank" class="reel-item">
+      <img src="images/dusk-sky.jpg" alt="">
+      <div class="reel-overlay"><div class="reel-play"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="reel-caption"><span class="rc-tag">Landscape</span><span class="rc-title">Blue hour neighbourhood</span></div>
+    </a>
+  </div>
+</section>
+
+<!-- BFF SECTION — Anwesha -->
+<section class="bff-section">
+  <div class="bff-bg-text">BFF</div>
+  <div class="bff-inner">
+    <div class="bff-heading reveal">
+      <span class="section-tag">// best_friend.json</span>
+      <h2>His person — <em class="blue-text serif-italic">Anwesha Ghosh</em></h2>
+    </div>
+    <div class="bff-layout">
+      <div class="bff-card reveal">
+        <div class="bff-card-glow"></div>
+        <div class="bff-card-top">
+          <div class="bff-avatar">
+            <img src="images/img2.jpg" alt="Anwesha">
+          </div>
+          <div>
+            <span class="bff-name">Anwesha Ghosh</span>
+            <span class="bff-handle">
+              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+              @itz.anwesha3103
+            </span>
+          </div>
+        </div>
+        <div class="bff-divider"></div>
+        <div class="bff-meta">
+          <div class="bff-meta-item"><span>Birthday</span><strong>31 March 2009</strong></div>
+          <div class="bff-meta-item"><span>Status</span><strong>Best Friend · Day 1</strong></div>
+          <div class="bff-meta-item"><span>Sports</span><strong>Badminton + Football</strong></div>
+        </div>
+        <div class="bff-quote">"The loudest laugh, the sharpest instinct, the friend who shows up every time."</div>
+        <a href="https://www.instagram.com/itz.anwesha3103" target="_blank" class="bff-ig-btn">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          Follow @itz.anwesha3103
+        </a>
+      </div>
+
+      <div class="bff-text reveal">
+        <p>Every great story needs a co-lead. For Drish, that person is <strong style="color:var(--white)">Anwesha Ghosh</strong> — and the word "best friend" barely covers it.</p>
+        <p>Born on the 31st of March, Anwesha is everything Drish is not and everything he needs: a badminton player with reflexes like lightning, a football striker with an athlete's mind, and a person whose laugh can fill a room from the next hallway over.</p>
+        <div class="bff-callout">
+          <div class="bff-callout-dot"></div>
+          <p>The gossip sessions, the inside jokes, the moments that exist only between the two of them — that is the Drish and Anwesha universe. Chaotic, loyal, and completely irreplaceable.</p>
+        </div>
+        <p>If Drish is the one behind the lens, Anwesha is the one who always ends up in the best frame. Go find her on Instagram — she is absolutely worth the follow.</p>
+        <a href="https://www.instagram.com/itz.anwesha3103" target="_blank" class="btn" style="margin-top:16px;">
+          Find Anwesha on Instagram
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing">
+  <div class="closing-inner">
+    <span class="closing-mono">// end_of_portfolio</span>
+    <h2>Let us <em>build</em> something.</h2>
+    <p>Drish Shah. Coder. Photographer. Athlete. The kind of person who ships things and shoots frames worth keeping.</p>
+    <div class="closing-actions">
+      <a href="https://github.com/coder1239756" target="_blank" class="btn btn-fill">GitHub</a>
+      <a href="https://www.instagram.com/ghostofcaldera1" target="_blank" class="btn">Instagram</a>
+      <a href="index.html" class="btn">Back to Home</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-name">Drish Shah</span>
+  <span class="footer-meta">Portfolio · 2025 · Made with love</span>
+  <a href="https://www.instagram.com/ghostofcaldera1" target="_blank">@ghostofcaldera1</a>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

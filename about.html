@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Drish Shah</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.about-hero {
+  min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
+  position: relative; overflow: hidden;
+  background: linear-gradient(135deg, var(--black) 0%, var(--deep) 100%);
+}
+/* code-lines decorative background */
+.about-hero::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: linear-gradient(rgba(88,166,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(88,166,255,.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.ah-left { display:flex; flex-direction:column; justify-content:center; padding: 120px 72px 80px; position:relative; z-index:2; }
+.ah-left h1 { font-size: clamp(3rem,5.5vw,7rem); color: var(--white); line-height: .95; margin-bottom: 24px; }
+.ah-left h1 em { color: var(--blue); font-style:italic; display:block; }
+.ah-left .subtitle { font-family:'Instrument Serif',serif; font-style:italic; font-size:1.2rem; color:var(--silver-dim); line-height:1.6; max-width:420px; margin-bottom: 40px; }
+.ah-tags { display:flex; flex-wrap:wrap; gap:8px; }
+.ah-tag { padding:5px 14px; border:1px solid rgba(88,166,255,.25); font-family:'JetBrains Mono',monospace; font-size:.65rem; color:var(--blue-dim); letter-spacing:.08em; transition:all .2s; }
+.ah-tag:hover { border-color:var(--blue); color:var(--blue); background:rgba(88,166,255,.08); }
+.ah-right { position:relative; overflow:hidden; }
+.ah-right img { width:100%; height:100%; object-fit:cover; filter:brightness(.6) contrast(1.1) saturate(.7); }
+.ah-right::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg,var(--black) 0%,transparent 30%); }
+
+.big-quote { padding:100px 72px; background:var(--black); position:relative; overflow:hidden; }
+.big-quote::before { content:'"'; position:absolute; top:-60px; left:30px; font-family:'Syne',sans-serif; font-size:36rem; font-weight:800; color:rgba(88,166,255,.03); line-height:1; pointer-events:none; }
+.big-quote blockquote { font-family:'Instrument Serif',serif; font-size:clamp(1.8rem,3.5vw,3.5rem); font-style:italic; color:var(--white); max-width:840px; line-height:1.4; position:relative; z-index:1; }
+.big-quote blockquote em { color:var(--blue); }
+.big-quote cite { display:block; margin-top:24px; font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; color:var(--blue-dim); font-style:normal; }
+
+.who { display:grid; grid-template-columns:1fr 1.1fr; min-height:80vh; }
+.who-visual { position:relative; overflow:hidden; }
+.who-visual img { width:100%; height:100%; object-fit:cover; filter:brightness(.6) contrast(1.1) saturate(.7); }
+.who-visual::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg,transparent 70%,var(--deep) 100%); }
+.who-badge { position:absolute; bottom:36px; left:36px; background:rgba(8,8,16,.8); backdrop-filter:blur(20px); border:1px solid rgba(88,166,255,.2); border-radius:4px; padding:18px 24px; box-shadow:inset 0 1px 0 rgba(88,166,255,.15); }
+.who-badge .wbnum { font-family:'Syne',sans-serif; font-size:2.6rem; font-weight:800; color:var(--blue); display:block; line-height:1; }
+.who-badge .wblabel { font-family:'JetBrains Mono',monospace; font-size:.62rem; letter-spacing:.18em; text-transform:uppercase; color:var(--silver-dim); display:block; margin-top:4px; }
+.who-text { background:var(--deep); padding:80px 72px; display:flex; flex-direction:column; justify-content:center; }
+.who-text h2 { font-size:clamp(2rem,2.8vw,3rem); color:var(--white); margin-bottom:24px; }
+.who-text p { font-size:1rem; line-height:1.85; color:var(--silver-dim); margin-bottom:18px; }
+.who-text .callout { border-left:2px solid var(--blue); padding:18px 22px; background:rgba(88,166,255,.04); margin:24px 0; font-family:'Instrument Serif',serif; font-style:italic; font-size:1.15rem; color:var(--silver); line-height:1.5; }
+
+/* Traits */
+.traits-section { padding:100px 72px; background:var(--black); }
+.traits-section h2 { font-size:clamp(2rem,3vw,3.6rem); color:var(--white); margin-bottom:64px; text-align:center; }
+.traits-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; }
+.trait-block { background:var(--panel); padding:44px 28px; position:relative; overflow:hidden; transition:background .3s; }
+.trait-block:hover { background:var(--panel2); }
+.trait-block::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:var(--blue); transform:scaleX(0); transform-origin:left; transition:transform .4s; }
+.trait-block:hover::after { transform:scaleX(1); }
+.trait-num { font-family:'Syne',sans-serif; font-size:3.5rem; font-weight:800; color:rgba(88,166,255,.1); line-height:1; display:block; margin-bottom:20px; transition:color .3s; }
+.trait-block:hover .trait-num { color:rgba(88,166,255,.25); }
+.trait-name { font-family:'Syne',sans-serif; font-size:1.15rem; color:var(--white); margin-bottom:10px; display:block; }
+.trait-desc { font-size:.85rem; line-height:1.65; color:var(--silver-dim); }
+
+/* Facts */
+.facts-row { display:grid; grid-template-columns:repeat(4,1fr); }
+.fact-tile { padding:60px 36px; position:relative; overflow:hidden; border-right:1px solid rgba(88,166,255,.08); }
+.fact-tile:last-child { border-right:none; }
+.fact-tile:nth-child(odd) { background:var(--deep); }
+.fact-tile:nth-child(even) { background:var(--black); }
+.fact-tile::after { content:''; position:absolute; bottom:0; left:0; right:0; height:0; background:linear-gradient(0deg,rgba(88,166,255,.06),transparent); transition:height .4s; }
+.fact-tile:hover::after { height:100%; }
+.fact-num { font-family:'Syne',sans-serif; font-size:4.5rem; font-weight:800; color:var(--blue); line-height:1; display:block; margin-bottom:10px; position:relative; z-index:1; }
+.fact-tile h4 { font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; color:var(--white); margin-bottom:8px; position:relative; z-index:1; }
+.fact-tile p { font-size:.82rem; line-height:1.6; color:var(--silver-dim); position:relative; z-index:1; }
+
+/* Timeline */
+.timeline { padding:100px 72px; background:var(--deep); }
+.timeline h2 { font-size:clamp(2rem,3vw,3.2rem); color:var(--white); margin-bottom:64px; }
+.tl-items { position:relative; padding-left:48px; max-width:720px; }
+.tl-items::before { content:''; position:absolute; left:0; top:8px; bottom:0; width:1px; background:linear-gradient(180deg,var(--blue),rgba(88,166,255,.1)); }
+.tl-item { position:relative; margin-bottom:52px; transition:transform .3s; }
+.tl-item:hover { transform:translateX(6px); }
+.tl-item::before { content:''; position:absolute; left:-55px; top:8px; width:13px; height:13px; border:2px solid var(--blue); background:var(--black); border-radius:50%; transition:background .3s, box-shadow .3s; }
+.tl-item:hover::before { background:var(--blue); box-shadow:0 0 14px rgba(88,166,255,.5); }
+.tl-date { font-family:'JetBrains Mono',monospace; font-size:.67rem; letter-spacing:.18em; text-transform:uppercase; color:var(--blue); margin-bottom:8px; display:block; }
+.tl-item h3 { font-family:'Syne',sans-serif; font-size:1.25rem; color:var(--white); margin-bottom:10px; }
+.tl-item p { font-size:.88rem; line-height:1.75; color:var(--silver-dim); max-width:540px; }
+
+/* Photo strip */
+.photo-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; }
+.ps-item { overflow:hidden; aspect-ratio:4/5; position:relative; }
+.ps-item img { width:100%; height:100%; object-fit:cover; display:block; filter:brightness(.7) contrast(1.08) saturate(.7); transition:transform .6s, filter .3s; }
+.ps-item:hover img { transform:scale(1.06); filter:brightness(.9) contrast(1.08) saturate(.85); }
+.ps-caption { position:absolute; bottom:0; left:0; right:0; padding:20px 18px 14px; background:linear-gradient(0deg,rgba(8,8,16,.88),transparent 100%); font-family:'Instrument Serif',serif; font-style:italic; font-size:.92rem; color:var(--silver-dim); opacity:0; transition:opacity .3s; }
+.ps-item:hover .ps-caption { opacity:1; }
+
+@media(max-width:900px){
+  .about-hero { grid-template-columns:1fr; }
+  .ah-right { height:50vh; }
+  .ah-left { padding:80px 24px 48px; }
+  .big-quote { padding:60px 24px; }
+  .who { grid-template-columns:1fr; }
+  .who-text { padding:48px 24px; }
+  .traits-section { padding:60px 24px; }
+  .traits-grid { grid-template-columns:repeat(2,1fr); }
+  .facts-row { grid-template-columns:repeat(2,1fr); }
+  .timeline { padding:60px 24px; }
+  .photo-strip { grid-template-columns:repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+<div id="scroll-progress"></div>
+<div id="page-transition"></div>
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+<nav>
+  <a href="index.html" class="nav-logo">D<span>.</span>S</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="work.html">Work</a></li>
+    <li><a href="photography.html">Photography</a></li>
+    <li><a href="connect.html">Connect</a></li>
+  </ul>
+  <a href="https://github.com/coder1239756" target="_blank" class="nav-gh">github/coder1239756</a>
+</nav>
+
+<section class="about-hero page">
+  <div class="ah-left">
+    <span class="section-tag fade-up d1">About</span>
+    <h1 class="fade-up d2">Drish<em>Shah</em></h1>
+    <p class="subtitle fade-up d3">Coder by discipline. Photographer by instinct. Athlete by habit. Creative by nature.</p>
+    <div class="ah-tags fade-up d4">
+      <span class="ah-tag">HTML / CSS / JS</span>
+      <span class="ah-tag">Sketching</span>
+      <span class="ah-tag">Photography</span>
+      <span class="ah-tag">Cricket</span>
+      <span class="ah-tag">Volleyball</span>
+      <span class="ah-tag">Football</span>
+      <span class="ah-tag">September 24th</span>
+    </div>
+  </div>
+  <div class="ah-right">
+    <img src="images/profile-hoodie.jpg" alt="Drish Shah">
+  </div>
+</section>
+
+<section class="big-quote">
+  <blockquote>
+    "He builds the things he cannot find and <em>photographs the things</em> everyone else forgets to look at."
+    <cite>— Somewhere between the terminal and the viewfinder</cite>
+  </blockquote>
+</section>
+
+<section class="who reveal">
+  <div class="who-visual">
+    <img src="images/profile-camera.jpg" alt="Drish Shah with camera">
+    <div class="who-badge">
+      <span class="wbnum" data-count="15">0</span>
+      <span class="wblabel">Years young</span>
+    </div>
+  </div>
+  <div class="who-text">
+    <span class="section-tag">Who He Is</span>
+    <h2>More than just <em class="blue-text">a dev</em></h2>
+    <p>Born on the 24th of September, Drish Shah exists at the intersection of logic and art. He writes code the way a poet writes — with intention, revision, and an eye for what is unnecessary.</p>
+    <div class="callout">"He approaches a blank canvas and a blank file the same way — curious, patient, and quietly determined to make something worth seeing."</div>
+    <p>Cricket, volleyball, football — three different games, one shared philosophy: read the field, stay calm, and execute. The same qualities show up in every line of code he writes and every photograph he takes.</p>
+    <a href="work.html" class="btn" style="margin-top:20px;">See His Work</a>
+  </div>
+</section>
+
+<section class="traits-section">
+  <span class="section-tag" style="text-align:center;display:block;margin-bottom:14px;">Character</span>
+  <h2>What makes him <em class="blue-text serif-italic">unforgettable</em></h2>
+  <div class="traits-grid">
+    <div class="trait-block tilt-card reveal">
+      <span class="trait-num">01</span>
+      <span class="trait-name">Curious</span>
+      <p class="trait-desc">He picks up new tools and skills the way most people pick up snacks — compulsively and with genuine excitement.</p>
+    </div>
+    <div class="trait-block tilt-card reveal">
+      <span class="trait-num">02</span>
+      <span class="trait-name">Creative</span>
+      <p class="trait-desc">Sketching, coding, shooting — different mediums, same instinct. He makes things that feel considered.</p>
+    </div>
+    <div class="trait-block tilt-card reveal">
+      <span class="trait-num">03</span>
+      <span class="trait-name">Loyal</span>
+      <p class="trait-desc">The kind of friend who shows up, who remembers, who builds things for the people he cares about.</p>
+    </div>
+    <div class="trait-block tilt-card reveal">
+      <span class="trait-num">04</span>
+      <span class="trait-name">Athletic</span>
+      <p class="trait-desc">Three sports, one drive — to keep moving, to compete cleanly, and to always respect the game.</p>
+    </div>
+  </div>
+</section>
+
+<div class="facts-row">
+  <div class="fact-tile tilt-card reveal">
+    <span class="fact-num" data-count="24">0</span>
+    <h4>September Birthday</h4>
+    <p>An autumn arrival — thoughtful, grounded, and quietly golden</p>
+  </div>
+  <div class="fact-tile tilt-card reveal">
+    <span class="fact-num" data-count="3">0</span>
+    <h4>Sports Played</h4>
+    <p>Cricket, volleyball, and football — a different court every season</p>
+  </div>
+  <div class="fact-tile tilt-card reveal">
+    <span class="fact-num" data-count="5">0</span>
+    <h4>Projects Built</h4>
+    <p>From portfolios to creative tools — things that actually ship</p>
+  </div>
+  <div class="fact-tile tilt-card reveal">
+    <span class="fact-num" style="font-size:3.5rem">inf</span>
+    <h4>Lines Written</h4>
+    <p>Code and captions, both crafted with the same attention to detail</p>
+  </div>
+</div>
+
+<section class="timeline">
+  <span class="section-tag">// history.log</span>
+  <h2>The making of <em class="blue-text serif-italic">Drish</em></h2>
+  <div class="tl-items">
+    <div class="tl-item reveal">
+      <span class="tl-date">September 24, 2010</span>
+      <h3>init()</h3>
+      <p>Born in September, which is to say: born in the amber-hour of the year. Already arriving with good timing.</p>
+    </div>
+    <div class="tl-item reveal">
+      <span class="tl-date">Early Years</span>
+      <h3>Learning the Games</h3>
+      <p>Cricket first. Then volleyball. Then football. Three sports with three different rhythms, all teaching the same lesson about patience and field vision.</p>
+    </div>
+    <div class="tl-item reveal">
+      <span class="tl-date">Growing Up</span>
+      <h3>First Lines of Code</h3>
+      <p>HTML was the gateway. CSS made it beautiful. JavaScript made it move. The addiction was immediate and showed no signs of slowing down.</p>
+    </div>
+    <div class="tl-item reveal">
+      <span class="tl-date">The Camera Era</span>
+      <h3>Through the Nikon</h3>
+      <p>Picked up a Nikon and discovered that seeing and looking are two completely different things. The photography portfolio began to grow.</p>
+    </div>
+    <div class="tl-item reveal">
+      <span class="tl-date">Now · 2025</span>
+      <h3>Building and Shooting</h3>
+      <p>Shipping projects, shooting photographs, sketching ideas, playing every sport he can. Still curious. Still building. Still absolutely himself.</p>
+    </div>
+  </div>
+</section>
+
+<div class="photo-strip">
+  <div class="ps-item"><img src="images/sunset-mountain.jpg" alt=""><div class="ps-caption">The mountains at dusk</div></div>
+  <div class="ps-item"><img src="images/horse-sunset.jpg" alt=""><div class="ps-caption">Silhouette at golden hour</div></div>
+  <div class="ps-item"><img src="images/flower-orange.jpg" alt=""><div class="ps-caption">Hibiscus in the light</div></div>
+</div>
+
+<footer>
+  <span class="footer-name">Drish Shah</span>
+  <span class="footer-meta">Portfolio · 2025 · Made with love</span>
+ <a href="https://www.instagram.com/ghostofcaldera1" target="_blank">@ghostofcaldera1</a>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>
